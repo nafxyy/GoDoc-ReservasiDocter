@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1090091910614",
+    "project_id": "godoc-reservasidocter",
+    "storage_bucket": "godoc-reservasidocter.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1090091910614:android:2f4223a84893fbf9f61077",
+        "android_client_info": {
+          "package_name": "com.example.pa_mobile"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCaWyoGnKsC1ALsb9zHJnCA1mge-oSVjS8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
