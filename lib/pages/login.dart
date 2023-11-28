@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:pa_mobile/pages/doctorPage.dart';
 import 'package:pa_mobile/pages/regis.dart';
 import 'package:pa_mobile/widgets/bottomNavbar.dart';
+import 'package:pa_mobile/widgets/bottomNavbarDoctor.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -35,7 +36,7 @@ class _LoginPageState extends State<LoginPage> {
 
         if (role.toLowerCase() == 'doctor') {
           Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (context) => DoctorPage()));
+              context, MaterialPageRoute(builder: (context) => BottomNavDoctor()));
         } else if (role.toLowerCase() == 'patient') {
           Navigator.pushReplacement(
               context, MaterialPageRoute(builder: (context) => BottomNavScreen()));

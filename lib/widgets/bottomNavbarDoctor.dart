@@ -2,18 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:pa_mobile/pages/account.dart';
 import 'package:pa_mobile/pages/doctorPage.dart';
 import 'package:pa_mobile/pages/favorite_page.dart';
-import 'package:pa_mobile/pages/main_page.dart';
 
 
 
-class BottomNavScreen extends StatefulWidget {
-  const BottomNavScreen();
+class BottomNavDoctor extends StatefulWidget {
+  const BottomNavDoctor();
 
   @override
   _BottomNavScreenState createState() => _BottomNavScreenState();
 }
 
-class _BottomNavScreenState extends State<BottomNavScreen> {
+class _BottomNavScreenState extends State<BottomNavDoctor> {
   int currentIndex = 0;
 
   final List<Widget> screens = [
