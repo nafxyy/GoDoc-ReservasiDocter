@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:pa_mobile/pages/MainpageDoctor.dart';
 import 'package:pa_mobile/pages/account.dart';
-import 'package:pa_mobile/pages/doctorPage.dart';
 import 'package:pa_mobile/pages/favorite_page.dart';
 
 
@@ -16,7 +16,7 @@ class _BottomNavScreenState extends State<BottomNavDoctor> {
   int currentIndex = 0;
 
   final List<Widget> screens = [
-    DoctorPage(),
+    MainDoctor(),
     FavoritePage(),
     AccountPage(),
   ];

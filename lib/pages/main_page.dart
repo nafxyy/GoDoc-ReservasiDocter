@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:pa_mobile/widgets/kategoriDokter.dart';
 import 'package:pa_mobile/widgets/rekomendasiDokter.dart';
 
-
 class MainPage extends StatelessWidget {
   const MainPage({super.key});
 
@@ -134,27 +133,22 @@ class MainPage extends StatelessWidget {
                           name: 'Umum', imageUrl: 'assets/dokter.png')),
                   CategoryDokter(
                       jenisDokter: JenisDokter(
-                          name: 'Kelamin', imageUrl: 'assets/dokter.png')),
+                          name: 'THT', imageUrl: 'assets/dokter.png')),
                   CategoryDokter(
                       jenisDokter: JenisDokter(
-                          name: 'Kulit',
-                          imageUrl: 'assets/dokter.png')),
+                          name: 'Kulit', imageUrl: 'assets/dokter.png')),
                   CategoryDokter(
                       jenisDokter: JenisDokter(
-                          name: 'Gigi',
-                          imageUrl: 'assets/dokter.png')),
+                          name: 'Gigi', imageUrl: 'assets/dokter.png')),
                   CategoryDokter(
                       jenisDokter: JenisDokter(
-                          name: 'Mata',
-                          imageUrl: 'assets/dokter.png')),
-                          CategoryDokter(
+                          name: 'Mata', imageUrl: 'assets/dokter.png')),
+                  CategoryDokter(
                       jenisDokter: JenisDokter(
-                          name: 'Organ Dalam',
-                          imageUrl: 'assets/dokter.png')),
-                          CategoryDokter(
+                          name: 'Organ Dalam', imageUrl: 'assets/dokter.png')),
+                  CategoryDokter(
                       jenisDokter: JenisDokter(
-                          name: 'Anak',
-                          imageUrl: 'assets/dokter.png')),
+                          name: 'Anak', imageUrl: 'assets/dokter.png')),
                 ],
               ),
             ),
@@ -169,7 +163,7 @@ class MainPage extends StatelessWidget {
               ),
             ),
           ),
-           for (var doctor in Doctors)
+          for (var doctor in Doctors)
             DoctorCard(
               image: doctor.image,
               name: doctor.name,
