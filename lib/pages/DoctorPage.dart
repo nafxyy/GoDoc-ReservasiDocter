@@ -17,6 +17,7 @@ class _DoctorPageState extends State<DoctorPage> {
   TextEditingController _umurDokterController = TextEditingController();
   TextEditingController _teleponDokterController = TextEditingController();
   TextEditingController _genderDokterController = TextEditingController();
+  TextEditingController _rumahSakitDokterController = TextEditingController();
 
   bool _isFirstTime = true;
   List<String> selectedHours = [];
@@ -59,6 +60,7 @@ class _DoctorPageState extends State<DoctorPage> {
           'telepon': _teleponDokterController.text,
           'umur': _umurDokterController.text,
           'available_hours': selectedHours,
+          'rumah_sakit' : _rumahSakitDokterController.text,
         });
       }
     } catch (e) {
@@ -100,6 +102,10 @@ class _DoctorPageState extends State<DoctorPage> {
           TextField(
             controller: _teleponDokterController,
             decoration: InputDecoration(labelText: 'Nomor Telepon'),
+          ),
+          TextField(
+            controller: _rumahSakitDokterController,
+            decoration: InputDecoration(labelText: 'Rumah Sakit'),
           ),
           DropdownButtonFormField<String>(
             value: _jenisDokterController.text,

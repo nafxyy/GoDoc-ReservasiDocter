@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'package:pa_mobile/widgets/kategoriDokter.dart';
@@ -12,8 +13,16 @@ class MainPage extends StatelessWidget {
     double containerHeight = screenHeight * 0.2; // 20% of screen height
 
     return Scaffold(
-      body: ListView(
-        children: [
+      body:  FutureBuilder(
+        future: FirebaseFirestore.instance.collection('doctors').get(),
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return CircularProgressIndicator(); // Loading indicator while fetching data
+          } else if (snapshot.hasError) {
+            return Text('Error: ${snapshot.error}');
+          } else {
+            return ListView(
+              children: [
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Container(
@@ -164,15 +173,18 @@ class MainPage extends StatelessWidget {
               ),
             ),
           ),
-          for (var doctor in Doctors)
-            DoctorCard(
-              image: doctor.image,
-              name: doctor.name,
-              jenis: doctor.jenis,
-              hospital: doctor.hospital,
-              review: doctor.review,
-            ),
-        ],
+          for (var doctorDoc in snapshot.data!.docs)
+                  DoctorCard(
+                    image: 'dokter', // Assuming there is an image field in Firestore
+                    name: doctorDoc['nama'],
+                    jenis: doctorDoc['jenis'],
+                    hospital: 'rumah_sakit',
+                    review: '5.0', // You can fetch the review from Firestore if available
+                  ),
+              ],
+            );
+          }
+        },
       ),
     );
   }
