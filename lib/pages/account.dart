@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:pa_mobile/pages/login.dart';
+import 'package:pa_mobile/pages/about.dart';
 import 'package:pa_mobile/widgets/kategoriDokter.dart';
 import 'package:pa_mobile/widgets/rekomendasiDokter.dart';
 
@@ -136,11 +137,14 @@ class AccountPage extends StatelessWidget {
           cardAccount('Riwayat Reservasi', Icons.arrow_forward, Icons.history, () {
             
           }),
-          cardAccount('Jadwal Reservasi', Icons.arrow_forward, Icons.schedule, () {
+          cardAccount('Jadwal Reservasi', Icons.arrow_forward, Icons.calendar_month, () {
             
           }),
           cardAccount('Tentang Aplikasi', Icons.arrow_forward, Icons.info, () {
-            
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => AboutPage()),
+            );
           }),
           cardAccount('Logout', Icons.arrow_forward, Icons.logout, () {
             _logout(context);

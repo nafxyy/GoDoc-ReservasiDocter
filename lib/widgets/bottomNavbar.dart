@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pa_mobile/pages/about.dart';
 import 'package:pa_mobile/pages/account.dart';
 import 'package:pa_mobile/pages/favorite_page.dart';
 import 'package:pa_mobile/pages/main_page.dart';
@@ -19,6 +20,7 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
     MainPage(),
     FavoritePage(),
     AccountPage(),
+    AboutPage()
   ];
 
   @override
