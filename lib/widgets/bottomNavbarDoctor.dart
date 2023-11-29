@@ -17,7 +17,6 @@ class _BottomNavScreenState extends State<BottomNavDoctor> {
 
   final List<Widget> screens = [
     MainDoctor(),
-    FavoritePage(),
     AccountPage(),
   ];
 
@@ -40,10 +39,6 @@ class _BottomNavScreenState extends State<BottomNavDoctor> {
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: "Home",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.favorite),
-            label: "Favorite",
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.account_circle),

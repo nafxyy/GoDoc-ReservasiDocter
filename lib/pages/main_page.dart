@@ -177,7 +177,7 @@ class MainPage extends StatelessWidget {
                     image: 'dokter', // Assuming there is an image field in Firestore
                     name: doctorDoc['nama'],
                     jenis: doctorDoc['jenis'],
-                    hospital: 'rumah_sakit',
+                    hospital: doctorDoc['rumah_sakit'],
                     review: '5.0', // You can fetch the review from Firestore if available
                   ),
               ],
