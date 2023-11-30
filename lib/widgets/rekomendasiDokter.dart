@@ -1,21 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pa_mobile/pages/akhir.dart';
-
-class Doctor {
-  final String image;
-  final String name;
-  final String jenis;
-  final String hospital;
-  final String review;
-
-  Doctor({
-    required this.image,
-    required this.name,
-    required this.jenis,
-    required this.hospital,
-    required this.review,
-  });
-}
+import 'package:pa_mobile/providers/DocIDprovider.dart';
+import 'package:provider/provider.dart';
 
 class DoctorCard extends StatelessWidget {
   final String image;
@@ -23,6 +9,7 @@ class DoctorCard extends StatelessWidget {
   final String jenis;
   final String hospital;
   final String review;
+  final String doctor_id;
 
   DoctorCard({
     required this.image,
@@ -30,6 +17,7 @@ class DoctorCard extends StatelessWidget {
     required this.jenis,
     required this.hospital,
     required this.review,
+    required this.doctor_id,
   });
 
   @override
@@ -39,7 +27,8 @@ class DoctorCard extends StatelessWidget {
 
     return GestureDetector(
       onTap: () {
-        // Navigate to the other screen here
+        Provider.of<DoctorIdProvider>(context, listen: false)
+            .setSelectedDoctorId(doctor_id);
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -98,33 +87,3 @@ class DoctorCard extends StatelessWidget {
   }
 }
 
-final Doctors = [
-  Doctor(
-    image: 'dokter',
-    name: 'Dr. A',
-    jenis: 'Umum',
-    hospital: 'City Hospital',
-    review: '5.0',
-  ),
-  Doctor(
-    image: 'dokter',
-    name: 'Dr. B',
-    jenis: 'Organ Dalam',
-    hospital: 'General Hospital',
-    review: '4.3',
-  ),
-  Doctor(
-    image: 'dokter',
-    name: 'Dr. C',
-    jenis: 'Anak',
-    hospital: 'Children\'s Clinic',
-    review: '4.7',
-  ),
-  Doctor(
-    image: 'dokter',
-    name: 'Dr. D',
-    jenis: 'Kulit',
-    hospital: 'Skin Care Center',
-    review: '5',
-  ),
-];

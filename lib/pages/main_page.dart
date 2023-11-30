@@ -180,6 +180,7 @@ class MainPage extends StatelessWidget {
                     jenis: doctorDoc['jenis'],
                     hospital: doctorDoc['rumah_sakit'],
                     review: '5.0', // You can fetch the review from Firestore if available
+                    doctor_id:  doctorDoc.id
                   ),
               ],
             );

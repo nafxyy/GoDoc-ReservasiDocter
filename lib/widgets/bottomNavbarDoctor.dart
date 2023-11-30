@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pa_mobile/pages/MainpageDoctor.dart';
 import 'package:pa_mobile/pages/account.dart';
-import 'package:pa_mobile/pages/favorite_page.dart';
-
 
 
 class BottomNavDoctor extends StatefulWidget {

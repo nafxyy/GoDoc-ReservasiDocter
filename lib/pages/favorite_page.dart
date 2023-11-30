@@ -54,14 +54,14 @@ class FavoritePage extends StatelessWidget {
               ),
             ),
           ),
-          for (var doctor in Doctors)
-            DoctorCard(
-              image: doctor.image,
-              name: doctor.name,
-              jenis: doctor.jenis,
-              hospital: doctor.hospital,
-              review: doctor.review,
-            ),
+          // for (var doctor in Doctors)
+          //   DoctorCard(
+          //     image: doctor.image,
+          //     name: doctor.name,
+          //     jenis: doctor.jenis,
+          //     hospital: doctor.hospital,
+          //     review: doctor.review,
+          //   ),
         ],
       ),
     );
