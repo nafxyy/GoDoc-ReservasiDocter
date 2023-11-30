@@ -47,7 +47,7 @@ class FavoritePage extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: const Text(
-              "Rekomendasi Dokter",
+              "Dokter Favorite Anda",
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
