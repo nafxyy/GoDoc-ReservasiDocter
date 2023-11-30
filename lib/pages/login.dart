@@ -1,6 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pa_mobile/pages/doctorPage.dart';
 import 'package:pa_mobile/pages/regis.dart';
 import 'package:pa_mobile/widgets/bottomNavbar.dart';
@@ -56,7 +56,6 @@ class _LoginPageState extends State<LoginPage> {
               'An unexpected error occurred. Please try again later.';
         }
       }
-
       _showAlert('Login Error', errorMessage);
     }
   }
@@ -84,27 +83,73 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Login'),
-      ),
-      body: Padding(
+      body: Container(
+        decoration: BoxDecoration(
+          color: Colors.grey[800], // Background color
+        ),
         padding: const EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            TextField(
-              controller: _emailController,
-              decoration: InputDecoration(labelText: 'Email'),
+            Image.asset(
+              'assets/logo_putih.png', // Replace with the path to your image
+              height: 300,
+              width: 200,
             ),
-            TextField(
-              controller: _passwordController,
-              decoration: InputDecoration(labelText: 'Password'),
-              obscureText: true,
+            SizedBox(height: 5.0),
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.white, // Form background color
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+              child: TextField(
+                controller: _emailController,
+                decoration: InputDecoration(
+                  labelText: 'Email',
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.black), // Warna hitam
+                  ),
+                  contentPadding: EdgeInsets.all(12.0),
+                ),
+              ),
+            ),
+            SizedBox(height: 16.0),
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.white, // Form background color
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+              child: TextField(
+                controller: _passwordController,
+                decoration: InputDecoration(
+                  labelText: 'Password',
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.black), // Warna hitam
+                  ),
+                  contentPadding: EdgeInsets.all(12.0),
+                ),
+                obscureText: true,
+              ),
             ),
             SizedBox(height: 16.0),
             ElevatedButton(
               onPressed: _login,
-              child: Text('Login'),
+              child: Container(
+                width: double.infinity,
+                padding: EdgeInsets.symmetric(vertical: 16.0),
+                child: Center(
+                  child: Text(
+                    'Login',
+                    style: TextStyle(fontSize: 18.0),
+                  ),
+                ),
+              ),
+              style: ElevatedButton.styleFrom(
+                primary: Color(0xFFB12856), // Button background color
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+              ),
             ),
             SizedBox(height: 16.0),
             TextButton(

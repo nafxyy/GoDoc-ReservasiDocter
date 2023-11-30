@@ -1,8 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:pa_mobile/pages/login.dart';
-import 'package:pa_mobile/widgets/kategoriDokter.dart';
-import 'package:pa_mobile/widgets/rekomendasiDokter.dart';
 
 class AboutPage extends StatelessWidget {
   AboutPage({Key? key});
