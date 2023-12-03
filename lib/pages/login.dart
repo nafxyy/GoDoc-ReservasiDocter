@@ -37,8 +37,8 @@ class _LoginPageState extends State<LoginPage> {
           Navigator.pushReplacement(
               context, MaterialPageRoute(builder: (context) => DoctorPage()));
         } else if (role.toLowerCase() == 'patient') {
-          Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (context) => BottomNavScreen()));
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (context) => BottomNavScreen()));
         }
       } else {
         _showAlert(
@@ -81,88 +81,98 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   @override
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
-          color: Colors.grey[800], // Background color
-        ),
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+        color: Colors.grey[800], // Background color
+        child: ListView(
+          padding: EdgeInsets.zero, // Remove default padding
+          physics:
+              BouncingScrollPhysics(), // Optional: Add a bouncing effect when scrolling
           children: [
-            Image.asset(
-              'assets/logo_putih.png', // Replace with the path to your image
-              height: 300,
-              width: 200,
-            ),
-            SizedBox(height: 5.0),
             Container(
-              decoration: BoxDecoration(
-                color: Colors.white, // Form background color
-                borderRadius: BorderRadius.circular(8.0),
-              ),
-              child: TextField(
-                controller: _emailController,
-                decoration: InputDecoration(
-                  labelText: 'Email',
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black), // Warna hitam
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset(
+                    'assets/logo_putih.png', // Replace with the path to your image
+                    height: 300,
+                    width: 200,
                   ),
-                  contentPadding: EdgeInsets.all(12.0),
-                ),
-              ),
-            ),
-            SizedBox(height: 16.0),
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.white, // Form background color
-                borderRadius: BorderRadius.circular(8.0),
-              ),
-              child: TextField(
-                controller: _passwordController,
-                decoration: InputDecoration(
-                  labelText: 'Password',
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black), // Warna hitam
+                  SizedBox(height: 5.0),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white, // Form background color
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                    child: TextField(
+                      controller: _emailController,
+                      decoration: InputDecoration(
+                        labelText: 'Email',
+                        border: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Colors.black), // Warna hitam
+                        ),
+                        contentPadding: EdgeInsets.all(12.0),
+                      ),
+                    ),
                   ),
-                  contentPadding: EdgeInsets.all(12.0),
-                ),
-                obscureText: true,
-              ),
-            ),
-            SizedBox(height: 16.0),
-            ElevatedButton(
-              onPressed: _login,
-              child: Container(
-                width: double.infinity,
-                padding: EdgeInsets.symmetric(vertical: 16.0),
-                child: Center(
-                  child: Text(
-                    'Login',
-                    style: TextStyle(fontSize: 18.0),
+                  SizedBox(height: 16.0),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white, // Form background color
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                    child: TextField(
+                      controller: _passwordController,
+                      decoration: InputDecoration(
+                        labelText: 'Password',
+                        border: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Colors.black), // Warna hitam
+                        ),
+                        contentPadding: EdgeInsets.all(12.0),
+                      ),
+                      obscureText: true,
+                    ),
                   ),
-                ),
-              ),
-              style: ElevatedButton.styleFrom(
-                primary: Color(0xFFB12856), // Button background color
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-              ),
-            ),
-            SizedBox(height: 16.0),
-            TextButton(
-              onPressed: () {
-                // Navigate to the registration page
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => RegisterPage(),
+                  SizedBox(height: 16.0),
+                  ElevatedButton(
+                    onPressed: _login,
+                    child: Container(
+                      width: double.infinity,
+                      padding: EdgeInsets.symmetric(vertical: 16.0),
+                      child: Center(
+                        child: Text(
+                          'Login',
+                          style: TextStyle(fontSize: 18.0),
+                        ),
+                      ),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      primary: Color(0xFFB12856), // Button background color
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                    ),
                   ),
-                );
-              },
-              child: Text('Don\'t have an account? Register'),
+                  SizedBox(height: 16.0),
+                  TextButton(
+                    onPressed: () {
+                      // Navigate to the registration page
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => RegisterPage(),
+                        ),
+                      );
+                    },
+                    child: Text('Don\'t have an account? Register'),
+                  ),
+                ],
+              ),
             ),
           ],
         ),

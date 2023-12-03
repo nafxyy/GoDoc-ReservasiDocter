@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pa_mobile/pages/MainpageDoctor.dart';
-import 'package:pa_mobile/pages/account.dart';
+import 'package:pa_mobile/pages/accountDoctor.dart';
 
 
 class BottomNavDoctor extends StatefulWidget {
@@ -15,7 +15,7 @@ class _BottomNavScreenState extends State<BottomNavDoctor> {
 
   final List<Widget> screens = [
     MainDoctor(),
-    AccountPage(),
+    DoctorAccountPage(),
   ];
 
   @override

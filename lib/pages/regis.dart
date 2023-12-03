@@ -82,128 +82,134 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          color: Colors.grey[800], // Background color
-        ),
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
+Widget build(BuildContext context) {
+  return Scaffold(
+    body: Container(
+      decoration: BoxDecoration(
+        color: Colors.grey[800], // Background color
+      ),
+      child: ListView(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                IconButton(
-                  icon: Icon(
-                    Icons.arrow_back,
-                    color: Colors.white,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    IconButton(
+                      icon: Icon(
+                        Icons.arrow_back,
+                        color: Colors.white,
+                      ),
+                      onPressed: () {
+                        Navigator.pop(context); // Kembali ke halaman sebelumnya
+                      },
+                    ),
+                  ],
+                ),
+                Image.asset(
+                  'assets/logo_putih.png', // Replace with the path to your image
+                  height: 300,
+                  width: 200,
+                ),
+                SizedBox(height: 5.0),
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white, // Form background color
+                    borderRadius: BorderRadius.circular(8.0),
                   ),
-                  onPressed: () {
-                    Navigator.pop(context); // Kembali ke halaman sebelumnya
+                  child: TextField(
+                    controller: _emailController,
+                    decoration: InputDecoration(
+                      labelText: 'Email',
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black), // Warna hitam
+                      ),
+                      contentPadding: EdgeInsets.all(12.0),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 16.0),
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white, // Form background color
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                  child: TextField(
+                    controller: _passwordController,
+                    decoration: InputDecoration(
+                      labelText: 'Password',
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black), // Warna hitam
+                      ),
+                      contentPadding: EdgeInsets.all(12.0),
+                    ),
+                    obscureText: true,
+                  ),
+                ),
+                SizedBox(height: 16.0),
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white, // Form background color
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                  child: TextField(
+                    controller: _confirmPasswordController,
+                    decoration: InputDecoration(
+                      labelText: 'Confirm Password',
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black), // Warna hitam
+                      ),
+                      contentPadding: EdgeInsets.all(12.0),
+                    ),
+                    obscureText: true,
+                  ),
+                ),
+                DropdownButton<String>(
+                  value: _selectedRole,
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      _selectedRole = newValue!;
+                    });
                   },
+                  items: _roles.map((String role) {
+                    return DropdownMenuItem<String>(
+                      value: role,
+                      child: Text(
+                        role,
+                        style: TextStyle(color: Colors.white), // Warna putih
+                      ),
+                    );
+                  }).toList(),
+                ),
+                SizedBox(height: 16.0),
+                ElevatedButton(
+                  onPressed: _register,
+                  child: Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.symmetric(vertical: 16.0),
+                    child: Center(
+                      child: Text(
+                        'Register',
+                        style: TextStyle(fontSize: 18.0),
+                      ),
+                    ),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    primary: Color(0xFFB12856), // Button background color
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                  ),
                 ),
               ],
             ),
-            Image.asset(
-              'assets/logo_putih.png', // Replace with the path to your image
-              height: 300,
-              width: 200,
-            ),
-            SizedBox(height: 5.0),
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.white, // Form background color
-                borderRadius: BorderRadius.circular(8.0),
-              ),
-              child: TextField(
-                controller: _emailController,
-                decoration: InputDecoration(
-                  labelText: 'Email',
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black), // Warna hitam
-                  ),
-                  contentPadding: EdgeInsets.all(12.0),
-                ),
-              ),
-            ),
-            SizedBox(height: 16.0),
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.white, // Form background color
-                borderRadius: BorderRadius.circular(8.0),
-              ),
-              child: TextField(
-                controller: _passwordController,
-                decoration: InputDecoration(
-                  labelText: 'Password',
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black), // Warna hitam
-                  ),
-                  contentPadding: EdgeInsets.all(12.0),
-                ),
-                obscureText: true,
-              ),
-            ),
-            SizedBox(height: 16.0),
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.white, // Form background color
-                borderRadius: BorderRadius.circular(8.0),
-              ),
-              child: TextField(
-                controller: _confirmPasswordController,
-                decoration: InputDecoration(
-                  labelText: 'Confirm Password',
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black), // Warna hitam
-                  ),
-                  contentPadding: EdgeInsets.all(12.0),
-                ),
-                obscureText: true,
-              ),
-            ),
-            DropdownButton<String>(
-              value: _selectedRole,
-              onChanged: (String? newValue) {
-                setState(() {
-                  _selectedRole = newValue!;
-                });
-              },
-              items: _roles.map((String role) {
-                return DropdownMenuItem<String>(
-                  value: role,
-                  child: Text(
-                    role,
-                    style: TextStyle(color: Colors.white), // Warna putih
-                  ),
-                );
-              }).toList(),
-            ),
-            SizedBox(height: 16.0),
-            ElevatedButton(
-              onPressed: _register,
-              child: Container(
-                width: double.infinity,
-                padding: EdgeInsets.symmetric(vertical: 16.0),
-                child: Center(
-                  child: Text(
-                    'Register',
-                    style: TextStyle(fontSize: 18.0),
-                  ),
-                ),
-              ),
-              style: ElevatedButton.styleFrom(
-                primary: Color(0xFFB12856), // Button background color
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
-    );
-  }
+    ),
+  );
+}
 }

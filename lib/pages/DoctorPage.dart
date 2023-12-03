@@ -1,7 +1,13 @@
+import 'dart:io';
+
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:pa_mobile/widgets/bottomNavbarDoctor.dart';
+import 'package:path/path.dart' as path;
 
 class DoctorPage extends StatefulWidget {
   @override
@@ -12,9 +18,12 @@ class _DoctorPageState extends State<DoctorPage> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
+  File? _image;
+  final picker = ImagePicker();
+
   TextEditingController _jenisDokterController = TextEditingController();
   TextEditingController _namaDokterController = TextEditingController();
-  TextEditingController _umurDokterController = TextEditingController();
+  TextEditingController _hargaDokterController = TextEditingController();
   TextEditingController _teleponDokterController = TextEditingController();
   TextEditingController _genderDokterController = TextEditingController();
   TextEditingController _rumahSakitDokterController = TextEditingController();
@@ -32,6 +41,34 @@ class _DoctorPageState extends State<DoctorPage> {
     super.didChangeDependencies();
     _jenisDokterController.text = 'Umum';
     _genderDokterController.text = 'Laki - Laki';
+  }
+
+  Future<void> _uploadImage(String userId) async {
+    if (_image == null) {
+      return;
+    }
+
+    try {
+      String fileName =
+          'doctor_images/$userId/$userId.${path.extension(_image!.path)}';
+      Reference firebaseStorageRef =
+          FirebaseStorage.instance.ref().child(fileName);
+      UploadTask uploadTask = firebaseStorageRef.putFile(_image!);
+
+      await uploadTask.whenComplete(() async {});
+    } catch (e) {
+      print('Error uploading image: $e');
+    }
+  }
+
+  Future<void> _getImage() async {
+    final pickedFile = await picker.getImage(source: ImageSource.gallery);
+
+    setState(() {
+      if (pickedFile != null) {
+        _image = File(pickedFile.path);
+      }
+    });
   }
 
   Future<void> _checkDoctorDataExists() async {
@@ -58,10 +95,11 @@ class _DoctorPageState extends State<DoctorPage> {
           'nama': _namaDokterController.text,
           'jenis': _jenisDokterController.text,
           'telepon': _teleponDokterController.text,
-          'umur': _umurDokterController.text,
+          'harga': _hargaDokterController.text,
           'available_hours': selectedHours,
-          'rumah_sakit' : _rumahSakitDokterController.text,
+          'rumah_sakit': _rumahSakitDokterController.text,
         });
+        _uploadImage(user.uid);
       }
     } catch (e) {
       print('Error saving doctor data: $e');
@@ -73,6 +111,27 @@ class _DoctorPageState extends State<DoctorPage> {
       padding: const EdgeInsets.all(16.0),
       child: ListView(
         children: [
+          GestureDetector(
+            onTap: _getImage,
+            child: ClipOval(
+              child: CircleAvatar(
+                radius: 50,
+                backgroundColor:
+                    Colors.grey[200], // Set background color as needed
+                child: _image != null
+                    ? Image.file(
+                        _image!,
+                        width: 50, // Adjust the width as needed
+                        height: 50, // Adjust the height as needed
+                        fit: BoxFit.cover, // Use BoxFit.cover for autofit
+                      )
+                    : Icon(
+                        Icons.camera_alt,
+                        size: 40,
+                      ),
+              ),
+            ),
+          ),
           TextField(
             controller: _namaDokterController,
             decoration: InputDecoration(labelText: 'Nama Dokter'),
@@ -96,12 +155,20 @@ class _DoctorPageState extends State<DoctorPage> {
             decoration: InputDecoration(labelText: 'Jenis Kelamin'),
           ),
           TextField(
-            controller: _umurDokterController,
-            decoration: InputDecoration(labelText: 'Umur'),
+            controller: _hargaDokterController,
+            decoration: InputDecoration(labelText: 'harga'),
+            keyboardType: TextInputType.number,
+            inputFormatters: <TextInputFormatter>[
+              FilteringTextInputFormatter.digitsOnly,
+            ],
           ),
           TextField(
             controller: _teleponDokterController,
             decoration: InputDecoration(labelText: 'Nomor Telepon'),
+            keyboardType: TextInputType.number,
+            inputFormatters: <TextInputFormatter>[
+              FilteringTextInputFormatter.digitsOnly,
+            ],
           ),
           TextField(
             controller: _rumahSakitDokterController,

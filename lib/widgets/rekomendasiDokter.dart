@@ -4,7 +4,7 @@ import 'package:pa_mobile/providers/DocIDprovider.dart';
 import 'package:provider/provider.dart';
 
 class DoctorCard extends StatelessWidget {
-  final String image;
+  final String? image;
   final String name;
   final String jenis;
   final String hospital;
@@ -43,10 +43,18 @@ class DoctorCard extends StatelessWidget {
           children: <Widget>[
             Expanded(
               flex: 1,
-              child: Image.asset(
-                'assets/$image.png',
-                height: imageHeight,
-                fit: BoxFit.contain,
+              child: ClipOval(
+                child: image != null
+                    ? Image.network(
+                        image!,
+                        height: imageHeight,
+                        fit: BoxFit.cover,
+                      )
+                    : Image.asset(
+                        'assets/dokter.png',
+                        height: imageHeight,
+                        fit: BoxFit.cover,
+                      ),
               ),
             ),
             Expanded(
@@ -86,4 +94,3 @@ class DoctorCard extends StatelessWidget {
     );
   }
 }
-
