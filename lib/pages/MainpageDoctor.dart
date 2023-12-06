@@ -4,11 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:pa_mobile/providers/theme.dart';
 import 'package:provider/provider.dart';
 
+// Widget utama untuk tampilan dokter
 class MainDoctor extends StatelessWidget {
   const MainDoctor({super.key});
 
   @override
   Widget build(BuildContext context) {
+    // Mengambil instance dari provider tema
     Tema tema = Provider.of<Tema>(context);
     double screenHeight = MediaQuery.of(context).size.height;
     double containerHeight = screenHeight * 0.2;
@@ -105,8 +107,8 @@ class MainDoctor extends StatelessWidget {
                       child: Center(
                         child: Image.asset(
                           'assets/dokter.png',
-                          width: double.infinity, // Take the available width
-                          height: double.infinity, // Take the available height
+                          width: double.infinity,
+                          height: double.infinity,
                           fit: BoxFit.contain,
                         ),
                       ),
@@ -126,7 +128,7 @@ class MainDoctor extends StatelessWidget {
               ),
             ),
           ),
-          // Use ReservationCard widget here
+          // Gunakan widget ReservationCard di sini
           ReservationCard(),
         ],
       ),
@@ -134,9 +136,11 @@ class MainDoctor extends StatelessWidget {
   }
 }
 
+// Widget untuk menampilkan kartu reservasi
 class ReservationCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    // Mendapatkan ID dokter dari pengguna saat ini
     String idDokter = FirebaseAuth.instance.currentUser!.uid;
 
     return FutureBuilder<QuerySnapshot>(
@@ -150,7 +154,7 @@ class ReservationCard extends StatelessWidget {
         } else if (snapshot.hasError) {
           return Text('Error: ${snapshot.error}');
         } else if (!snapshot.hasData || snapshot.data == null) {
-          return Text('No reservation data found');
+          return Text('Tidak ada data reservasi ditemukan');
         } else {
           var reservations = snapshot.data!.docs;
 
@@ -173,20 +177,53 @@ class ReservationCard extends StatelessWidget {
                     return Text('Error: ${userSnapshot.error}');
                   } else if (!userSnapshot.hasData ||
                       userSnapshot.data == null) {
-                    return Text('Patient data not found');
+                    return Text('Data pasien tidak ditemukan');
                   } else {
                     var userData = userSnapshot.data!;
                     String name = userData['nama'];
                     String telepon = userData['telepon'];
 
                     return Card(
-                      margin: EdgeInsets.all(16.0),
-                      color: Colors.grey[200],
-                      child: ListTile(
-                        title: Text('Tanggal: $tanggal\nJam: $jam.00'),
-                        subtitle: Text('Pasien: $name\nTelepon: $telepon'),
-                      ),
-                    );
+  margin: EdgeInsets.all(16.0),
+  color: const Color(0xFFB12856),
+  child: ListTile(
+    title: Row(
+      children: [
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Tanggal: $tanggal\nJam: $jam.00',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Times New Roman',
+                ),
+              ),
+              Text(
+                'Pasien: $name\nTelepon: $telepon',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                ),
+              ),
+            ],
+          ),
+        ),
+        SizedBox(width: 20),
+        Image.asset(
+          'assets/Stetoskop.png', // Ganti dengan path gambar yang sesuai
+          width: 100, // Sesuaikan dengan lebar gambar yang diinginkan
+          height: 100, // Sesuaikan dengan tinggi gambar yang diinginkan
+          fit: BoxFit.contain,
+        ),
+      ],
+    ),
+  ),
+);
+
                   }
                 },
               );

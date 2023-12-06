@@ -13,13 +13,19 @@ class DoctorDetail extends StatefulWidget {
 }
 
 class _DoctorDetailState extends State<DoctorDetail> {
+  // Variables to store selected date, selected hour, and doctor ID
   String selectedDate = "";
   String selectedHour = "";
   String idDokter = "";
+
+  // Firebase authentication and Firestore instances
   final _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  // Variable to track whether the doctor is a favorite
   bool isFavorite = false;
 
+  // Function to handle booking a doctor
   Future<void> _bookDoctor() async {
     try {
       User? user = _auth.currentUser;
@@ -28,6 +34,7 @@ class _DoctorDetailState extends State<DoctorDetail> {
         bool isAlreadyBooked = await _isAlreadyBooked();
 
         if (isAlreadyBooked) {
+          // Display an error dialog if the doctor is already booked
           showDialog(
             context: context,
             builder: (context) {
@@ -55,8 +62,7 @@ class _DoctorDetailState extends State<DoctorDetail> {
             'id_dokter': idDokter,
           });
 
-          print('Doctor booked successfully!');
-          // ignore: use_build_context_synchronously
+          // Display success dialog and navigate to the home screen
           showDialog(
             context: context,
             builder: (context) {
@@ -154,9 +160,10 @@ class _DoctorDetailState extends State<DoctorDetail> {
     return false;
   }
 
-// Function to check if the selected date and time are already booked
+  // Function to check if the selected date and time are already booked
   Future<bool> _isAlreadyBooked() async {
     try {
+      // Query reservations based on selected date, time, and doctor ID
       QuerySnapshot reservationSnapshot = await FirebaseFirestore.instance
           .collection('reservations')
           .where('tanggal', isEqualTo: selectedDate)
@@ -164,6 +171,7 @@ class _DoctorDetailState extends State<DoctorDetail> {
           .where('id_dokter', isEqualTo: idDokter)
           .get();
 
+      // Check if there are any reservations for the selected date and time
       return reservationSnapshot.docs.isNotEmpty;
     } catch (e) {
       print('Error checking existing reservations: $e');
@@ -179,6 +187,7 @@ class _DoctorDetailState extends State<DoctorDetail> {
     idDokter = doctorId;
 
     return FutureBuilder<DocumentSnapshot>(
+      // Fetch doctor data based on the selected doctor ID
       future:
           FirebaseFirestore.instance.collection('doctors').doc(doctorId).get(),
       builder: (context, snapshot) {
@@ -189,6 +198,7 @@ class _DoctorDetailState extends State<DoctorDetail> {
         } else if (!snapshot.hasData || snapshot.data == null) {
           return Text('Doctor data not found');
         } else {
+          // Extract doctor details from the document snapshot
           var doctorData = snapshot.data!;
           String name = doctorData['nama'];
           String jenis = doctorData['jenis'];
@@ -203,34 +213,39 @@ class _DoctorDetailState extends State<DoctorDetail> {
               backgroundColor: Colors.white,
               title: Text('Doctor Details'),
               actions: [
+                // Favorite button
                 IconButton(
                   color: Colors.black,
                   icon: Icon(Icons.favorite),
                   onPressed: _toggleFavorite,
                 ),
+                // Share button
                 IconButton(
                   color: Colors.black,
                   icon: Icon(Icons.share),
                   onPressed: () {
-                    // Share
+                    // Share functionality
                   },
                 ),
               ],
             ),
             body: ListView(
               children: [
+                // Doctor details card
                 Card(
                   margin: EdgeInsets.all(16.0),
-                  color: Colors.white,
+                  color: const Color(0xFFB12856),
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Row(
                       children: <Widget>[
+                        // Doctor's image
                         Expanded(
                           flex: 1,
                           child: _buildDoctorImage(
                               context, imageFileName), // Load doctor's image
                         ),
+                        // Doctor's information
                         Expanded(
                           flex: 2,
                           child: ListTile(
@@ -238,30 +253,45 @@ class _DoctorDetailState extends State<DoctorDetail> {
                               name,
                               style: TextStyle(
                                 color: Colors.black,
-                                fontSize: 20.0, // Set the font size as needed
+                                fontSize: 25,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'poppins',
                               ),
                             ),
                             subtitle: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
+                                // Doctor's type and hospital
                                 Padding(
                                   padding: const EdgeInsets.only(top: 5.0),
                                   child: Text(
                                     '$jenis | $hospital',
-                                    style: TextStyle(color: Colors.grey),
+                                    style: TextStyle(
+                                      color: Colors.grey[300],
+                                      fontSize: 21,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: 'poppins',
+                                    ),
                                   ),
                                 ),
+                                // Doctor's contact number
                                 Row(
                                   children: [
                                     Padding(
                                       padding: const EdgeInsets.only(top: 5.0),
                                       child: Text(
                                         ' $telepon',
-                                        style: TextStyle(color: Colors.black),
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: 'poppins',
+                                        ),
                                       ),
                                     ),
                                   ],
                                 ),
+                                // Doctor's consultation fee
                                 Row(
                                   children: [
                                     Padding(
@@ -269,9 +299,9 @@ class _DoctorDetailState extends State<DoctorDetail> {
                                       child: Text(
                                         'Rp. $harga',
                                         style: TextStyle(
-                                          color: Color(0xFFB12856),
-                                          fontSize:
-                                              22.0, // Set the font size as needed
+                                          color: Colors.grey[300],
+                                          fontSize: 22.0,
+                                          fontFamily: 'poppins',
                                         ),
                                       ),
                                     ),
@@ -285,19 +315,21 @@ class _DoctorDetailState extends State<DoctorDetail> {
                     ),
                   ),
                 ),
-                // Add the "Tanggal" text
+
+                // Menambahkan teks "Tanggal"
                 Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Text(
-                    'Tanggal $selectedDate',
+                    'Tanggal ',
                     style: TextStyle(
-                      fontSize: 18,
+                      color: Colors.black,
+                      fontSize: 20,
                       fontWeight: FontWeight.bold,
+                      fontFamily: 'poppins',
                     ),
                   ),
                 ),
-
-                // Add a container to display the dates
+// Menambahkan container untuk menampilkan tanggal-tanggal
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Container(
@@ -306,10 +338,10 @@ class _DoctorDetailState extends State<DoctorDetail> {
                       scrollDirection: Axis.horizontal,
                       itemCount: 5,
                       itemBuilder: (context, index) {
-                        // Calculate the date for the next 5 days
+                        // Menghitung tanggal untuk 5 hari ke depan
                         DateTime currentDate =
                             DateTime.now().add(Duration(days: index));
-                        // Format the date as needed
+                        // Memformat tanggal sesuai kebutuhan
                         String formattedDate =
                             DateFormat('yyyy-MM-dd').format(currentDate);
 
@@ -324,7 +356,7 @@ class _DoctorDetailState extends State<DoctorDetail> {
                             padding: EdgeInsets.all(8.0),
                             decoration: BoxDecoration(
                               color: selectedDate == formattedDate
-                                  ? Colors.blue // Change the color as needed
+                                  ? const Color(0xFFB12856)
                                   : Colors.grey[300],
                               borderRadius: BorderRadius.circular(8.0),
                             ),
@@ -332,10 +364,12 @@ class _DoctorDetailState extends State<DoctorDetail> {
                               child: Text(
                                 formattedDate,
                                 style: TextStyle(
+                                  fontSize: 20,
                                   fontWeight: FontWeight.bold,
+                                  fontFamily: 'poppins',
                                   color: selectedDate == formattedDate
                                       ? Colors
-                                          .white // Change the text color as needed
+                                          .white // Ganti warna teks sesuai kebutuhan
                                       : Colors.black,
                                 ),
                               ),
@@ -346,22 +380,28 @@ class _DoctorDetailState extends State<DoctorDetail> {
                     ),
                   ),
                 ),
+
+// Bagian Jam Praktek
                 Container(
                   padding: EdgeInsets.all(16.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      // Menambahkan teks "Jam Praktek" dengan jam yang dipilih
                       Padding(
                         padding: const EdgeInsets.only(bottom: 16.0),
                         child: Text(
-                          'Jam Praktek$selectedHour',
+                          'Jam Praktek',
                           style: TextStyle(
-                            fontSize: 18,
+                            color: Colors.black,
+                            fontSize: 20,
                             fontWeight: FontWeight.bold,
+                            fontFamily: 'poppins',
                           ),
                         ),
                       ),
                       SizedBox(height: 8.0),
+                      // Menampilkan jam-jam yang tersedia
                       Wrap(
                         spacing: 8.0,
                         runSpacing: 8.0,
@@ -373,19 +413,24 @@ class _DoctorDetailState extends State<DoctorDetail> {
                               });
                             },
                             child: Container(
+                              
                               padding: EdgeInsets.all(8.0),
                               decoration: BoxDecoration(
                                 color: selectedHour == hour
-                                    ? Colors.blue // Change the color as needed
+                                    ? const Color(0xFFB12856)
+                                    // Ganti warna sesuai kebutuhan
                                     : Colors.grey[300],
                                 borderRadius: BorderRadius.circular(8.0),
                               ),
                               child: Text(
                                 '$hour.00',
                                 style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'poppins',
                                   color: selectedHour == hour
                                       ? Colors
-                                          .white // Change the text color as needed
+                                          .white // Ganti warna teks sesuai kebutuhan
                                       : Colors.black,
                                 ),
                               ),
@@ -396,6 +441,8 @@ class _DoctorDetailState extends State<DoctorDetail> {
                     ],
                   ),
                 ),
+
+// Tombol untuk memesan dokter
                 Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: ElevatedButton(
@@ -403,7 +450,18 @@ class _DoctorDetailState extends State<DoctorDetail> {
                         (selectedDate.isNotEmpty && selectedHour.isNotEmpty)
                             ? _bookDoctor
                             : null,
-                    child: Text('Book Doctor'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFFB12856),
+                    ),
+                    child: Text(
+                      'BOOK DOCTOR',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 19,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'poppins',
+                      ),
+                    ),
                   ),
                 ),
               ],
@@ -414,11 +472,15 @@ class _DoctorDetailState extends State<DoctorDetail> {
     );
   }
 
+  // Widget to build the doctor's image
   Widget _buildDoctorImage(BuildContext context, String imageFileName) {
+    // Calculate the image height based on the screen height
     final double imageHeight = MediaQuery.of(context).size.height * 0.15;
+
+    // Function to get the doctor's image URL from Firebase Storage
     Future<String?> _getDoctorImageURL(String doctorId) async {
       try {
-        // Your existing code to retrieve the download URL
+        // Retrieve the download URL for the doctor's image
         ListResult listResult = await FirebaseStorage.instance
             .ref()
             .child('doctor_images/$doctorId')
@@ -435,6 +497,7 @@ class _DoctorDetailState extends State<DoctorDetail> {
       }
     }
 
+    // FutureBuilder to asynchronously load the doctor's image
     return FutureBuilder<String?>(
       future: _getDoctorImageURL(imageFileName),
       builder: (context, snapshot) {
@@ -446,6 +509,7 @@ class _DoctorDetailState extends State<DoctorDetail> {
         } else {
           final imageUrl = snapshot.data;
 
+          // Display the doctor's image in a circular clip
           return ClipOval(
             child: imageUrl != null
                 ? Image.network(
