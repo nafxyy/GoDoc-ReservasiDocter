@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:pa_mobile/providers/DocIDprovider.dart';
+import 'package:pa_mobile/providers/theme.dart';
 import 'package:pa_mobile/widgets/bottomNavbar.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
@@ -181,10 +182,11 @@ class _DoctorDetailState extends State<DoctorDetail> {
 
   @override
   Widget build(BuildContext context) {
-    // Assuming you have a DoctorIdProvider in your app
+    Tema tema = Provider.of<Tema>(context);
     final doctorIdProvider = Provider.of<DoctorIdProvider>(context);
     final String doctorId = doctorIdProvider.selectedDoctorId;
     idDokter = doctorId;
+    TextTheme textTheme = tema.isDarkMode ? tema.teks : tema.teksdark;
 
     return FutureBuilder<DocumentSnapshot>(
       // Fetch doctor data based on the selected doctor ID
@@ -209,16 +211,20 @@ class _DoctorDetailState extends State<DoctorDetail> {
           String imageFileName = doctorId;
 
           return Scaffold(
+            backgroundColor: tema.isDarkMode
+                ? tema.display().scaffoldBackgroundColor
+                : tema.displaydark().scaffoldBackgroundColor,
             appBar: AppBar(
               backgroundColor: const Color(0xFFB12856),
-              title: Text('Doctor Details',
-              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 25,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: 'poppins',
-                              ),
-                              ),
+              title: Text(
+                'Doctor Details',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 25,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'poppins',
+                ),
+              ),
               actions: [
                 // Favorite button
                 IconButton(
@@ -238,254 +244,246 @@ class _DoctorDetailState extends State<DoctorDetail> {
             ),
             body: Column(
               children: [
-                 Expanded(
-                child: ListView(
-                  children: [
-                // Doctor details card
-                Card(
-                  margin: EdgeInsets.all(16.0),
-                  color: const Color(0xFFB12856),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      children: <Widget>[
-                        // Doctor's image
-                        Expanded(
-                          flex: 1,
-                          child: _buildDoctorImage(
-                              context, imageFileName), // Load doctor's image
-                        ),
-                        // Doctor's information
-                        Expanded(
-                          flex: 2,
-                          child: ListTile(
-                            title: Text(
-                              name,
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 25,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: 'poppins',
+                Expanded(
+                  child: ListView(
+                    children: [
+                      // Doctor details card
+                      Card(
+                        margin: EdgeInsets.all(16.0),
+                        color: const Color(0xFFB12856),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            children: <Widget>[
+                              // Doctor's image
+                              Expanded(
+                                flex: 1,
+                                child: _buildDoctorImage(context,
+                                    imageFileName), // Load doctor's image
                               ),
-                            ),
-                            subtitle: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                // Doctor's type and hospital
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 5.0),
-                                  child: Text(
-                                    '$jenis | $hospital',
+                              // Doctor's information
+                              Expanded(
+                                flex: 2,
+                                child: ListTile(
+                                  title: Text(
+                                    name,
                                     style: TextStyle(
-                                      color: Colors.grey[300],
-                                      fontSize: 21,
+                                      color: Colors.black,
+                                      fontSize: 25,
                                       fontWeight: FontWeight.bold,
                                       fontFamily: 'poppins',
                                     ),
                                   ),
-                                ),
-                                // Doctor's contact number
-                                Row(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 5.0),
-                                      child: Text(
-                                        ' $telepon',
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold,
-                                          fontFamily: 'poppins',
+                                  subtitle: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      // Doctor's type and hospital
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(top: 5.0),
+                                        child: Text(
+                                          '$jenis | $hospital',
+                                          style: TextStyle(
+                                            color: Colors.grey[300],
+                                            fontSize: 21,
+                                            fontWeight: FontWeight.bold,
+                                            fontFamily: 'poppins',
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                                // Doctor's consultation fee
-                                Row(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 5.0),
-                                      child: Text(
-                                        'Rp. $harga',
-                                        style: TextStyle(
-                                          color: Colors.grey[300],
-                                          fontSize: 22.0,
-                                          fontFamily: 'poppins',
-                                        ),
+                                      // Doctor's contact number
+                                      Row(
+                                        children: [
+                                          Padding(
+                                            padding:
+                                                const EdgeInsets.only(top: 5.0),
+                                            child: Text(
+                                              ' $telepon',
+                                              style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.bold,
+                                                fontFamily: 'poppins',
+                                              ),
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-
-                // Menambahkan teks "Tanggal"
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Text(
-                    'Tanggal ',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'poppins',
-                    ),
-                  ),
-                ),
-// Menambahkan container untuk menampilkan tanggal-tanggal
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    height: 50,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: 5,
-                      itemBuilder: (context, index) {
-                        // Menghitung tanggal untuk 5 hari ke depan
-                        DateTime currentDate =
-                            DateTime.now().add(Duration(days: index));
-                        // Memformat tanggal sesuai kebutuhan
-                        String formattedDate =
-                            DateFormat('yyyy-MM-dd').format(currentDate);
-
-                        return GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              selectedDate = formattedDate;
-                            });
-                          },
-                          child: Container(
-                            margin: EdgeInsets.symmetric(horizontal: 8.0),
-                            padding: EdgeInsets.all(8.0),
-                            decoration: BoxDecoration(
-                              color: selectedDate == formattedDate
-                                  ? const Color(0xFFB12856)
-                                  : Colors.grey[300],
-                              borderRadius: BorderRadius.circular(8.0),
-                            ),
-                            child: Center(
-                              child: Text(
-                                formattedDate,
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: 'poppins',
-                                  color: selectedDate == formattedDate
-                                      ? Colors
-                                          .white // Ganti warna teks sesuai kebutuhan
-                                      : Colors.black,
+                                      // Doctor's consultation fee
+                                      Row(
+                                        children: [
+                                          Padding(
+                                            padding:
+                                                const EdgeInsets.only(top: 5.0),
+                                            child: Text(
+                                              'Rp. $harga',
+                                              style: TextStyle(
+                                                color: Colors.grey[300],
+                                                fontSize: 22.0,
+                                                fontFamily: 'poppins',
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                ),
-
-// Bagian Jam Praktek
-                Container(
-                  padding: EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Menambahkan teks "Jam Praktek" dengan jam yang dipilih
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 16.0),
-                        child: Text(
-                          'Jam Praktek',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            fontFamily: 'poppins',
+                            ],
                           ),
                         ),
                       ),
-                      SizedBox(height: 8.0),
-                      // Menampilkan jam-jam yang tersedia
-                      Wrap(
-                        spacing: 8.0,
-                        runSpacing: 8.0,
-                        children: availableHours.map((hour) {
-                          return GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                selectedHour = hour;
-                              });
-                            },
-                            child: Container(
-                              
-                              padding: EdgeInsets.all(8.0),
-                              decoration: BoxDecoration(
-                                color: selectedHour == hour
-                                    ? const Color(0xFFB12856)
-                                    // Ganti warna sesuai kebutuhan
-                                    : Colors.grey[300],
-                                borderRadius: BorderRadius.circular(8.0),
-                              ),
-                              child: Text(
-                                '$hour.00',
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: 'poppins',
-                                  color: selectedHour == hour
-                                      ? Colors
-                                          .white // Ganti warna teks sesuai kebutuhan
-                                      : Colors.black,
+
+                      // Menambahkan teks "Tanggal"
+                      Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Text(
+                          'Tanggal ',
+                          style: textTheme.bodySmall,
+                        ),
+                      ),
+// Menambahkan container untuk menampilkan tanggal-tanggal
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          height: 50,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: 5,
+                            itemBuilder: (context, index) {
+                              // Menghitung tanggal untuk 5 hari ke depan
+                              DateTime currentDate =
+                                  DateTime.now().add(Duration(days: index));
+                              // Memformat tanggal sesuai kebutuhan
+                              String formattedDate =
+                                  DateFormat('yyyy-MM-dd').format(currentDate);
+
+                              return GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    selectedDate = formattedDate;
+                                  });
+                                },
+                                child: Container(
+                                  margin: EdgeInsets.symmetric(horizontal: 8.0),
+                                  padding: EdgeInsets.all(8.0),
+                                  decoration: BoxDecoration(
+                                    color: selectedDate == formattedDate
+                                        ? const Color(0xFFB12856)
+                                        : Colors.grey[300],
+                                    borderRadius: BorderRadius.circular(8.0),
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      formattedDate,
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                        fontFamily: 'poppins',
+                                        color: selectedDate == formattedDate
+                                            ? Colors
+                                                .white // Ganti warna teks sesuai kebutuhan
+                                            : Colors.black,
+                                      ),
+                                    ),
+                                  ),
                                 ),
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+
+// Bagian Jam Praktek
+                      Container(
+                        padding: EdgeInsets.all(16.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // Menambahkan teks "Jam Praktek" dengan jam yang dipilih
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 16.0),
+                              child: Text(
+                                'Jam Praktek',
+                                style: textTheme.bodySmall,
                               ),
                             ),
-                          );
-                        }).toList(),
+                            SizedBox(height: 8.0),
+                            // Menampilkan jam-jam yang tersedia
+                            Wrap(
+                              spacing: 8.0,
+                              runSpacing: 8.0,
+                              children: availableHours.map((hour) {
+                                return GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      selectedHour = hour;
+                                    });
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.all(8.0),
+                                    decoration: BoxDecoration(
+                                      color: selectedHour == hour
+                                          ? const Color(0xFFB12856)
+                                          // Ganti warna sesuai kebutuhan
+                                          : Colors.grey[300],
+                                      borderRadius: BorderRadius.circular(8.0),
+                                    ),
+                                    child: Text(
+                                      '$hour.00',
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                        fontFamily: 'poppins',
+                                        color: selectedHour == hour
+                                            ? Colors
+                                                .white // Ganti warna teks sesuai kebutuhan
+                                            : Colors.black,
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              }).toList(),
+                            ),
+                          ],
+                        ),
+                      ),
+
+// Tombol untuk memesan dokter
+                      Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: ElevatedButton(
+                          onPressed: (selectedDate.isNotEmpty &&
+                                  selectedHour.isNotEmpty)
+                              ? _bookDoctor
+                              : null,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFFB12856),
+                          ),
+                          child: Text(
+                            'BOOK DOCTOR',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 19,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'poppins',
+                            ),
+                          ),
+                        ),
                       ),
                     ],
                   ),
                 ),
-
-// Tombol untuk memesan dokter
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: ElevatedButton(
-                    onPressed:
-                        (selectedDate.isNotEmpty && selectedHour.isNotEmpty)
-                            ? _bookDoctor
-                            : null,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFFB12856),
-                    ),
-                    child: Text(
-                      'BOOK DOCTOR',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 19,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'poppins',
-                        ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-                 ),
               ],
             ),
-          
-        );
+          );
+        }
+      },
+    );
+  }
 
-      }
-    },
-  );
-}
   // Widget to build the doctor's image
   Widget _buildDoctorImage(BuildContext context, String imageFileName) {
     // Calculate the image height based on the screen height

@@ -5,8 +5,10 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/services.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
+import 'package:pa_mobile/providers/theme.dart';
 import 'package:pa_mobile/widgets/bottomNavbarDoctor.dart';
 import 'package:path/path.dart' as path;
+import 'package:provider/provider.dart';
 
 class EditDoctorPage extends StatefulWidget {
   @override
@@ -60,6 +62,13 @@ class _EditDoctorPageState extends State<EditDoctorPage> {
     try {
       User? user = _auth.currentUser;
       if (user != null) {
+        List<int> sortedHours = selectedHours.map(int.parse).toList();
+        sortedHours.sort();
+
+        // Convert the sortedHours back to strings
+        List<String> sortedHoursStrings =
+            sortedHours.map((hour) => hour.toString()).toList();
+
         await _firestore.collection('doctors').doc(user.uid).update({
           'jenis': _jenisDokterController.text,
           'nama': _namaDokterController.text,
@@ -67,7 +76,7 @@ class _EditDoctorPageState extends State<EditDoctorPage> {
           'telepon': _teleponDokterController.text,
           'gender': _genderDokterController.text,
           'rumah_sakit': _rumahSakitDokterController.text,
-          'available_hours': selectedHours,
+          'available_hours': sortedHoursStrings,
         });
 
         await _uploadImage(user.uid);
@@ -112,6 +121,9 @@ class _EditDoctorPageState extends State<EditDoctorPage> {
   }
 
   Widget _buildEditDoctorForm() {
+    Tema tema = Provider.of<Tema>(context);
+    TextTheme textTheme = tema.isDarkMode ? tema.teks : tema.teksdark;
+
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: ListView(
@@ -121,14 +133,13 @@ class _EditDoctorPageState extends State<EditDoctorPage> {
             child: ClipOval(
               child: CircleAvatar(
                 radius: 50,
-                backgroundColor:
-                    Colors.grey[200], // Set background color as needed
+                backgroundColor: Colors.grey[200],
                 child: _image != null
                     ? Image.file(
                         _image!,
-                        width: 70, // Adjust the width as needed
-                        height: 70, // Adjust the height as needed
-                        fit: BoxFit.cover, // Use BoxFit.cover for autofit
+                        width: 70,
+                        height: 70,
+                        fit: BoxFit.cover,
                       )
                     : Icon(
                         Icons.camera_alt,
@@ -140,13 +151,10 @@ class _EditDoctorPageState extends State<EditDoctorPage> {
           TextField(
             controller: _namaDokterController,
             decoration: InputDecoration(
-                labelText: 'Nama Dokter',
-                labelStyle: TextStyle(
-                    fontSize: 22, fontFamily: 'poppins', color: Colors.black)),
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 26,
+              labelText: 'Nama Dokter',
+              labelStyle: textTheme.bodyMedium,
             ),
+            style: textTheme.bodySmall,
           ),
           DropdownButtonFormField<String>(
             value: _genderDokterController.text.isNotEmpty
@@ -163,17 +171,18 @@ class _EditDoctorPageState extends State<EditDoctorPage> {
             ].map((String specialization) {
               return DropdownMenuItem<String>(
                 value: specialization,
-                child: Text(specialization),
+                child: Text(
+                  specialization,
+                  style: textTheme.bodySmall,
+                ),
               );
             }).toList(),
             decoration: InputDecoration(
-                labelText: 'Jenis Kelamin',
-                labelStyle: TextStyle(
-                    fontSize: 22, fontFamily: 'poppins', color: Colors.black)),
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 26,
+              labelText: 'Jenis Kelamin',
+              labelStyle: textTheme.bodyMedium,
             ),
+            style: textTheme.bodySmall,
+            dropdownColor: Color(0xFFB12856),
           ),
           TextField(
             controller: _hargaDokterController,
@@ -182,12 +191,10 @@ class _EditDoctorPageState extends State<EditDoctorPage> {
               labelStyle: TextStyle(
                 fontFamily: 'poppins',
                 fontSize: 22,
+                color: textTheme.bodyMedium?.color,
               ),
             ),
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 26,
-            ),
+            style: textTheme.bodySmall,
             keyboardType: TextInputType.number,
             inputFormatters: <TextInputFormatter>[
               FilteringTextInputFormatter.digitsOnly,
@@ -200,12 +207,10 @@ class _EditDoctorPageState extends State<EditDoctorPage> {
               labelStyle: TextStyle(
                 fontFamily: 'poppins',
                 fontSize: 22,
+                color: textTheme.bodyMedium?.color,
               ),
             ),
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 26,
-            ),
+            style: textTheme.bodySmall,
             keyboardType: TextInputType.number,
             inputFormatters: <TextInputFormatter>[
               FilteringTextInputFormatter.digitsOnly,
@@ -218,12 +223,10 @@ class _EditDoctorPageState extends State<EditDoctorPage> {
               labelStyle: TextStyle(
                 fontFamily: 'poppins',
                 fontSize: 22,
+                color: textTheme.bodyMedium?.color,
               ),
             ),
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 26,
-            ),
+            style: textTheme.bodySmall,
           ),
           DropdownButtonFormField<String>(
             value: _jenisDokterController.text.isNotEmpty
@@ -245,7 +248,10 @@ class _EditDoctorPageState extends State<EditDoctorPage> {
             ].map((String specialization) {
               return DropdownMenuItem<String>(
                 value: specialization,
-                child: Text(specialization),
+                child: Text(
+                  specialization,
+                  style: textTheme.bodySmall,
+                ),
               );
             }).toList(),
             decoration: InputDecoration(
@@ -253,14 +259,17 @@ class _EditDoctorPageState extends State<EditDoctorPage> {
               labelStyle: TextStyle(
                 fontFamily: 'poppins',
                 fontSize: 25,
+                color: textTheme.bodyMedium?.color,
               ),
             ),
-            style: TextStyle(
-              color: Colors.black,
-            ),
+            style: textTheme.bodySmall,
+            dropdownColor: Color(0xFFB12856),
           ),
           SizedBox(height: 16.0),
-          Text('Pilih Jam Praktek:', style: TextStyle(fontSize: 18)),
+          Text(
+            'Pilih Jam Praktek:',
+            style: TextStyle(fontSize: 18),
+          ),
           SizedBox(height: 8.0),
           _buildHourSelection(),
           SizedBox(height: 16.0),
@@ -288,7 +297,11 @@ class _EditDoctorPageState extends State<EditDoctorPage> {
 
   @override
   Widget build(BuildContext context) {
+    Tema tema = Provider.of<Tema>(context);
     return Scaffold(
+      backgroundColor: tema.isDarkMode
+          ? tema.display().scaffoldBackgroundColor
+          : tema.displaydark().scaffoldBackgroundColor,
       appBar: AppBar(
         backgroundColor: const Color(0xFFB12856),
         title: Text(

@@ -45,9 +45,10 @@ class _RegisterPageState extends State<RegisterPage> {
       });
       _showAlert('Registration Successful', 'You can now log in.');
 
-      Future.delayed(Duration(seconds: 2), () {
-        Navigator.pop(context); // Go back to login page
+      Future.delayed(Duration(seconds: 10), () {
+        Navigator.of(context).pop();
       });
+
 
     } catch (e) {
       print('Error registering user: $e');
@@ -65,6 +66,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
       _showAlert('Registration Error', errorMessage);
     }
+
   }
 
   void _showAlert(String title, String message) {
@@ -129,8 +131,10 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                     child: TextField(
                       controller: _emailController,
+                      style: TextStyle(color: Colors.black),
                       decoration: InputDecoration(
                         labelText: 'Email',
+                        labelStyle: TextStyle(color: Colors.black),
                         border: OutlineInputBorder(
                           borderSide:
                               BorderSide(color: Colors.black), // Warna hitam
@@ -147,8 +151,10 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                     child: TextField(
                       controller: _passwordController,
+                      style: TextStyle(color: Colors.black),
                       decoration: InputDecoration(
                         labelText: 'Password',
+                        labelStyle: TextStyle(color: Colors.black),
                         border: OutlineInputBorder(
                           borderSide:
                               BorderSide(color: Colors.black), // Warna hitam
@@ -166,8 +172,10 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                     child: TextField(
                       controller: _confirmPasswordController,
+                      style: TextStyle(color: Colors.black),
                       decoration: InputDecoration(
                         labelText: 'Confirm Password',
+                        labelStyle: TextStyle(color: Colors.black),
                         border: OutlineInputBorder(
                           borderSide:
                               BorderSide(color: Colors.black), // Warna hitam
@@ -193,6 +201,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         ),
                       );
                     }).toList(),
+                    dropdownColor: Color(0xFFB12856),
                   ),
                   SizedBox(height: 16.0),
                   ElevatedButton(

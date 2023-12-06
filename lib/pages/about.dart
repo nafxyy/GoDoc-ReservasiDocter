@@ -13,6 +13,8 @@ class AboutPage extends StatelessWidget {
     double screenHeight = MediaQuery.of(context).size.height;
     double containerHeight = screenHeight * 0.2; // 20% of screen height
     Tema tema = Provider.of<Tema>(context);
+    TextTheme textTheme = tema.isDarkMode ? tema.teks : tema.teksdark;
+
     return Scaffold(
       backgroundColor: tema.isDarkMode
           ? tema.display().scaffoldBackgroundColor
@@ -28,22 +30,18 @@ class AboutPage extends StatelessWidget {
                   IconButton(
                     icon: Icon(
                       Icons.arrow_back,
-                      color: Colors.black,
+                      color:textTheme.bodyMedium?.color,
                     ),
                     onPressed: () {
                       Navigator.pop(context); // Untuk kembali ke halaman sebelumnya
                     },
                   ),
-                  const Column(
+                  Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         'About Us',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold,
-                        ),
+                         style: textTheme.bodySmall,
                       ),
                     ],
                   ),

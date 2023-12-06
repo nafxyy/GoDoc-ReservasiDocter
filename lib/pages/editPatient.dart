@@ -5,8 +5,10 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/services.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
+import 'package:pa_mobile/providers/theme.dart';
 import 'package:pa_mobile/widgets/bottomNavbar.dart';
 import 'package:path/path.dart' as path;
+import 'package:provider/provider.dart';
 
 class EditPatientPage extends StatefulWidget {
   @override
@@ -98,115 +100,110 @@ class _EditPatientPageState extends State<EditPatientPage> {
   }
 
   Widget _buildEditPatientForm() {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: ListView(
-        children: [
-          GestureDetector(
-            onTap: _getImage,
-            child: ClipOval(
-              child: CircleAvatar(
-                radius: 50,
-                backgroundColor:
-                    Colors.grey[200], // Set background color as needed
-                child: _image != null
-                    ? Image.file(
-                        _image!,
-                        width: 50, // Adjust the width as needed
-                        height: 50, // Adjust the height as needed
-                        fit: BoxFit.cover, // Use BoxFit.cover for autofit
-                      )
-                    : Icon(
-                        Icons.camera_alt,
-                        size: 40,
-                      ),
-              ),
+  Tema tema = Provider.of<Tema>(context);
+  TextTheme textTheme = tema.isDarkMode ? tema.teks : tema.teksdark;
+
+  return Padding(
+    padding: const EdgeInsets.all(16.0),
+    child: ListView(
+      children: [
+        GestureDetector(
+          onTap: _getImage,
+          child: ClipOval(
+            child: CircleAvatar(
+              radius: 50,
+              backgroundColor: Colors.grey[200],
+              child: _image != null
+                  ? Image.file(
+                      _image!,
+                      width: 50,
+                      height: 50,
+                      fit: BoxFit.cover,
+                    )
+                  : Icon(
+                      Icons.camera_alt,
+                      size: 40,
+                    ),
             ),
           ),
-          TextField(
-            controller: _namaController,
-            decoration: InputDecoration(labelText: 'Nama Pasien',
-            labelStyle: TextStyle(
-              fontSize: 22,
-              fontFamily: 'poppins',
-              color: Colors.black)
+        ),
+        TextField(
+          controller: _namaController,
+          decoration: InputDecoration(
+            labelText: 'Nama Pasien',
+            labelStyle: textTheme.bodyMedium,
+          ),
+          style: textTheme.bodySmall,
+        ),
+        DropdownButtonFormField<String>(
+          value: _genderController.text.isNotEmpty
+              ? _genderController.text
+              : null,
+          onChanged: (String? newValue) {
+            setState(() {
+              _genderController.text = newValue!;
+            });
+          },
+          items: [
+            'Laki - Laki',
+            'Perempuan',
+          ].map((String specialization) {
+            return DropdownMenuItem<String>(
+              value: specialization,
+              child: Text(
+                specialization,
+                style: textTheme.bodySmall,
               ),
-          style: TextStyle(
-            color: Colors.black,
-              fontSize: 26,
-              fontFamily: 'poppins',
-
+            );
+          }).toList(),
+          dropdownColor: Color(0xFFB12856),
+          decoration: InputDecoration(
+            labelText: 'Jenis Kelamin',
+            labelStyle: textTheme.bodyMedium,
           ),
+        ),
+        TextField(
+          controller: _teleponController,
+          decoration: InputDecoration(
+            labelText: 'Nomor Telepon',
+            labelStyle: textTheme.bodyMedium,
           ),
-          DropdownButtonFormField<String>(
-            value: _genderController.text.isNotEmpty
-                ? _genderController.text
-                : null,
-            onChanged: (String? newValue) {
-              setState(() {
-                _genderController.text = newValue!;
-              });
-            },
-            items: [
-              'Laki - Laki',
-              'Perempuan',
-            ].map((String specialization) {
-              return DropdownMenuItem<String>(
-                value: specialization,
-                child: Text(specialization),
-              );
-            }).toList(),
-            decoration: InputDecoration(labelText: 'Jenis Kelamin',
-            labelStyle: TextStyle(
-              fontSize: 22,
-              fontFamily: 'poppins',
-              color: Colors.black)
+          style: textTheme.bodySmall,
+          keyboardType: TextInputType.number,
+          inputFormatters: <TextInputFormatter>[
+            FilteringTextInputFormatter.digitsOnly,
+          ],
+        ),
+        SizedBox(height: 20),
+        ElevatedButton(
+          onPressed: () {
+            _updatePatientData();
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => NavScreen()),
+            );
+          },
+          child: Text(
+            'Update Data',
+           style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'poppins',
               ),
-          
           ),
-          TextField(
-            controller: _teleponController,
-            decoration: InputDecoration(labelText: 'Nomor Telepon',
-            labelStyle: TextStyle(
-              fontSize: 22,
-              fontFamily: 'poppins',
-              color: Colors.black)
-              ),
-          style: TextStyle(
-            color: Colors.black,
-              fontSize: 26,
-              fontFamily: 'poppins',
-          ),
-            keyboardType: TextInputType.number,
-            inputFormatters: <TextInputFormatter>[
-              FilteringTextInputFormatter.digitsOnly,
-            ],
-          ),
-          SizedBox(height: 20),
-          ElevatedButton(
-            onPressed: () {
-              _updatePatientData();
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => NavScreen()),
-              );
-            },
-            child: Text('Update Data',
-            style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-            fontFamily: 'poppins',
-          ),
-          ),
-          ),
-        ],
-      ),
-    );
-  }
+        ),
+      ],
+    ),
+  );
+}
 
   @override
   Widget build(BuildContext context) {
+    Tema tema = Provider.of<Tema>(context);
     return Scaffold(
+      backgroundColor: tema.isDarkMode
+          ? tema.display().scaffoldBackgroundColor
+          : tema.displaydark().scaffoldBackgroundColor,
       appBar: AppBar(
         backgroundColor: const Color(0xFFB12856),
         title: Text(

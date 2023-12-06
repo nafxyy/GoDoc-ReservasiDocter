@@ -81,7 +81,8 @@ class DoctorCard extends StatelessWidget {
                         ),
                         Text(
                           ' $review',
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(color: Colors.white,
+                          fontSize: 16),
                         ),
                       ],
                     ),

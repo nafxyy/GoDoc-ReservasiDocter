@@ -45,7 +45,6 @@ class FavoritePage extends StatelessWidget {
                             Text(
                               'Here\'s your favorite',
                               style: TextStyle(
-                                
                                 fontSize: 25,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -53,7 +52,6 @@ class FavoritePage extends StatelessWidget {
                             Text(
                               'Doctors!',
                               style: TextStyle(
-                                
                                 fontSize: 25,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -194,7 +192,7 @@ class FavoritePage extends StatelessWidget {
           },
           child: Card(
             margin: EdgeInsets.symmetric(vertical: 8.0),
-            // color: Color(0xFFB12856),
+            color: Color(0xFFB12856),
             child: Row(
               children: <Widget>[
                 Expanded(
@@ -225,7 +223,7 @@ class FavoritePage extends StatelessWidget {
                       children: [
                         Text(
                           '$jenis | $hospital',
-                          style: TextStyle(color: Colors.grey),
+                          style: TextStyle(color: Colors.grey, fontSize: 16),
                         ),
                         Row(
                           children: [
@@ -236,7 +234,8 @@ class FavoritePage extends StatelessWidget {
                             ),
                             Text(
                               ' 5.0',
-                              style: TextStyle(color: Colors.white),
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 20),
                             ),
                           ],
                         ),

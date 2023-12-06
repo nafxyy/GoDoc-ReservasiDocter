@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:pa_mobile/providers/theme.dart';
+import 'package:provider/provider.dart';
 
 class RiwayatPage extends StatefulWidget {
   RiwayatPage({Key? key}) : super(key: key);
@@ -14,7 +16,12 @@ class _RiwayatPageState extends State<RiwayatPage> {
 
   @override
   Widget build(BuildContext context) {
+    Tema tema = Provider.of<Tema>(context);
+    TextTheme textTheme = tema.isDarkMode ? tema.teks : tema.teksdark;
     return Scaffold(
+      backgroundColor: tema.isDarkMode
+          ? tema.display().scaffoldBackgroundColor
+          : tema.displaydark().scaffoldBackgroundColor,
       appBar: AppBar(
         backgroundColor: const Color(0xFFB12856),
         title: Text(
@@ -48,11 +55,7 @@ class _RiwayatPageState extends State<RiwayatPage> {
                     children: [
                       Text(
                         reservation.tanggal,
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            fontFamily: 'poppins'),
+                        style: textTheme.bodySmall,
                       ),
                       FutureBuilder(
                         future: _getDoctorDetails(reservation.doctorId),

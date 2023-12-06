@@ -6,8 +6,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:pa_mobile/providers/theme.dart';
 import 'package:pa_mobile/widgets/bottomNavbar.dart';
 import 'package:path/path.dart' as path;
+import 'package:provider/provider.dart';
 
 class PatientPage extends StatefulWidget {
   @override
@@ -90,7 +92,7 @@ class _PatientPageState extends State<PatientPage> {
         await _firestore.collection('Patients').doc(user.uid).set({
           'nama': _namaController.text,
           'telepon': _teleponController.text,
-          'gender':_genderController.text,
+          'gender': _genderController.text,
         });
         _uploadImage(user.uid);
       }
@@ -100,6 +102,9 @@ class _PatientPageState extends State<PatientPage> {
   }
 
   Widget _buildPatientDataForm() {
+    Tema tema = Provider.of<Tema>(context);
+    TextTheme textTheme = tema.isDarkMode ? tema.teks : tema.teksdark;
+
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: ListView(
@@ -109,13 +114,12 @@ class _PatientPageState extends State<PatientPage> {
             child: ClipOval(
               child: CircleAvatar(
                 radius: 50,
-                backgroundColor:
-                    Colors.grey[200],
+                backgroundColor: Colors.grey[200],
                 child: _image != null
                     ? Image.file(
                         _image!,
                         width: 50,
-                        height: 50, 
+                        height: 50,
                         fit: BoxFit.cover,
                       )
                     : Icon(
@@ -127,7 +131,11 @@ class _PatientPageState extends State<PatientPage> {
           ),
           TextField(
             controller: _namaController,
-            decoration: InputDecoration(labelText: 'Nama'),
+            decoration: InputDecoration(
+              labelText: 'Nama',
+              labelStyle: textTheme.bodyMedium,
+            ),
+            style: textTheme.bodySmall,
           ),
           DropdownButtonFormField<String>(
             value: _genderController.text,
@@ -142,37 +150,57 @@ class _PatientPageState extends State<PatientPage> {
             ].map((String specialization) {
               return DropdownMenuItem<String>(
                 value: specialization,
-                child: Text(specialization),
+                child: Text(
+                  specialization,
+                  style: textTheme.bodySmall,
+                ),
               );
             }).toList(),
-            decoration: InputDecoration(labelText: 'Jenis Kelamin'),
+            decoration: InputDecoration(
+              labelText: 'Jenis Kelamin',
+              labelStyle: textTheme.bodyMedium,
+            ),
+            dropdownColor: Color(0xFFB12856), // Set the dropdown background color
           ),
           TextField(
             controller: _teleponController,
-            decoration: InputDecoration(labelText: 'Nomor Telepon'),
+            decoration: InputDecoration(
+              labelText: 'Nomor Telepon',
+              labelStyle: textTheme.bodyMedium,
+            ),
+            style: textTheme.bodySmall,
             keyboardType: TextInputType.number,
             inputFormatters: <TextInputFormatter>[
               FilteringTextInputFormatter.digitsOnly,
             ],
           ),
-         
           ElevatedButton(
             onPressed: () {
               _savePatientData();
-              Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (context) => PatientPage()));
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => PatientPage()),
+              );
             },
-            child: Text('Simpan Data'),
+            child: Text(
+              'Simpan Data',
+              style: textTheme.bodyMedium?.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ),
         ],
       ),
     );
   }
 
-  
   @override
   Widget build(BuildContext context) {
+    Tema tema = Provider.of<Tema>(context);
     return Scaffold(
+      backgroundColor: tema.isDarkMode
+          ? tema.display().scaffoldBackgroundColor
+          : tema.displaydark().scaffoldBackgroundColor,
       body: _isFirstTime ? _buildPatientDataForm() : NavScreen(),
     );
   }

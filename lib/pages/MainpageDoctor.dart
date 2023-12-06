@@ -184,46 +184,47 @@ class ReservationCard extends StatelessWidget {
                     String telepon = userData['telepon'];
 
                     return Card(
-  margin: EdgeInsets.all(16.0),
-  color: const Color(0xFFB12856),
-  child: ListTile(
-    title: Row(
-      children: [
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Tanggal: $tanggal\nJam: $jam.00',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'Times New Roman',
-                ),
-              ),
-              Text(
-                'Pasien: $name\nTelepon: $telepon',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 16,
-                ),
-              ),
-            ],
-          ),
-        ),
-        SizedBox(width: 20),
-        Image.asset(
-          'assets/Stetoskop.png', // Ganti dengan path gambar yang sesuai
-          width: 100, // Sesuaikan dengan lebar gambar yang diinginkan
-          height: 100, // Sesuaikan dengan tinggi gambar yang diinginkan
-          fit: BoxFit.contain,
-        ),
-      ],
-    ),
-  ),
-);
-
+                      margin: EdgeInsets.all(16.0),
+                      color: const Color(0xFFB12856),
+                      child: ListTile(
+                        title: Row(
+                          children: [
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Tanggal: $tanggal\nJam: $jam.00',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: 'Times New Roman',
+                                    ),
+                                  ),
+                                  Text(
+                                    'Pasien: $name\nTelepon: $telepon',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            SizedBox(width: 20),
+                            Image.asset(
+                              'assets/Stetoskop.png', // Ganti dengan path gambar yang sesuai
+                              width:
+                                  100, // Sesuaikan dengan lebar gambar yang diinginkan
+                              height:
+                                  100, // Sesuaikan dengan tinggi gambar yang diinginkan
+                              fit: BoxFit.contain,
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
                   }
                 },
               );

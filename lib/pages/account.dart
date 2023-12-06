@@ -108,7 +108,6 @@ class AccountPage extends StatelessWidget {
                         child: Text(
                           'Edit',
                           style: TextStyle(
-                            color: Colors.black,
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
                           ),
