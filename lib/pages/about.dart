@@ -41,7 +41,7 @@ class AboutPage extends StatelessWidget {
                     children: [
                       Text(
                         'About Us',
-                         style: textTheme.bodySmall,
+                         style: textTheme.bodyLarge,
                       ),
                     ],
                   ),
