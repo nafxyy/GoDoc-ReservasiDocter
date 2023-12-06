@@ -158,9 +158,30 @@ class ReservationCard extends StatelessWidget {
         } else {
           var reservations = snapshot.data!.docs;
 
+          // Convert the list of reservations to a list of maps
+          List<Map<String, dynamic>> reservationsList =
+              reservations.map((reservation) {
+            return {
+              'tanggal': reservation['tanggal'],
+              'jam': reservation['jam'],
+              'user_id': reservation['user_id'],
+            };
+          }).toList();
+
+          // Sort the list of reservations based on the 'tanggal' and 'jam' fields
+          reservationsList.sort((a, b) {
+            // Compare 'tanggal' first
+            int tanggalComparison = a['tanggal'].compareTo(b['tanggal']);
+
+            // If 'tanggal' is the same, compare 'jam'
+            return tanggalComparison == 0
+                ? a['jam'].compareTo(b['jam'])
+                : tanggalComparison;
+          });
+
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: reservations.map((reservation) {
+            children: reservationsList.map((reservation) {
               String tanggal = reservation['tanggal'];
               String jam = reservation['jam'];
               String userId = reservation['user_id'];
