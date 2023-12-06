@@ -125,7 +125,18 @@ class _EditPatientPageState extends State<EditPatientPage> {
           ),
           TextField(
             controller: _namaController,
-            decoration: InputDecoration(labelText: 'Nama Pasien'),
+            decoration: InputDecoration(labelText: 'Nama Pasien',
+            labelStyle: TextStyle(
+              fontSize: 22,
+              fontFamily: 'poppins',
+              color: Colors.black)
+              ),
+          style: TextStyle(
+            color: Colors.black,
+              fontSize: 26,
+              fontFamily: 'poppins',
+
+          ),
           ),
           DropdownButtonFormField<String>(
             value: _genderController.text.isNotEmpty
@@ -145,16 +156,33 @@ class _EditPatientPageState extends State<EditPatientPage> {
                 child: Text(specialization),
               );
             }).toList(),
-            decoration: InputDecoration(labelText: 'Jenis Kelamin'),
+            decoration: InputDecoration(labelText: 'Jenis Kelamin',
+            labelStyle: TextStyle(
+              fontSize: 22,
+              fontFamily: 'poppins',
+              color: Colors.black)
+              ),
+          
           ),
           TextField(
             controller: _teleponController,
-            decoration: InputDecoration(labelText: 'Nomor Telepon'),
+            decoration: InputDecoration(labelText: 'Nomor Telepon',
+            labelStyle: TextStyle(
+              fontSize: 22,
+              fontFamily: 'poppins',
+              color: Colors.black)
+              ),
+          style: TextStyle(
+            color: Colors.black,
+              fontSize: 26,
+              fontFamily: 'poppins',
+          ),
             keyboardType: TextInputType.number,
             inputFormatters: <TextInputFormatter>[
               FilteringTextInputFormatter.digitsOnly,
             ],
           ),
+          SizedBox(height: 20),
           ElevatedButton(
             onPressed: () {
               _updatePatientData();
@@ -163,7 +191,13 @@ class _EditPatientPageState extends State<EditPatientPage> {
                 MaterialPageRoute(builder: (context) => NavScreen()),
               );
             },
-            child: Text('Update Data'),
+            child: Text('Update Data',
+            style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            fontFamily: 'poppins',
+          ),
+          ),
           ),
         ],
       ),

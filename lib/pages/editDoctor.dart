@@ -137,21 +137,17 @@ class _EditDoctorPageState extends State<EditDoctorPage> {
               ),
             ),
           ),
-
- TextField(
-          controller: _namaDokterController,
-          decoration: InputDecoration(
-            labelText: 'Nama Dokter', 
-            labelStyle: TextStyle(
-              fontSize: 24,
-              fontFamily: 'poppins',
-              color: Colors.black)
-              ),
-          style: TextStyle(
-            color: Colors.black,
-              fontSize: 28,
+          TextField(
+            controller: _namaDokterController,
+            decoration: InputDecoration(
+                labelText: 'Nama Dokter',
+                labelStyle: TextStyle(
+                    fontSize: 22, fontFamily: 'poppins', color: Colors.black)),
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 26,
+            ),
           ),
-        ),
           DropdownButtonFormField<String>(
             value: _genderDokterController.text.isNotEmpty
                 ? _genderDokterController.text
@@ -170,27 +166,28 @@ class _EditDoctorPageState extends State<EditDoctorPage> {
                 child: Text(specialization),
               );
             }).toList(),
-            decoration: InputDecoration(labelText: 'Jenis Kelamin',
-            labelStyle: TextStyle(
-            fontFamily: 'poppins',fontSize: 25,
-              ),
-              ),
-              style: TextStyle(
-            color: Colors.black,
-          ),
+            decoration: InputDecoration(
+                labelText: 'Jenis Kelamin',
+                labelStyle: TextStyle(
+                    fontSize: 22, fontFamily: 'poppins', color: Colors.black)),
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 26,
+            ),
           ),
           TextField(
             controller: _hargaDokterController,
-            decoration: InputDecoration(labelText: 'Harga',
-            labelStyle: TextStyle(
-            fontFamily: 'poppins',
-                          fontSize: 25,
+            decoration: InputDecoration(
+              labelText: 'Harga',
+              labelStyle: TextStyle(
+                fontFamily: 'poppins',
+                fontSize: 22,
               ),
-              ),
-              style: TextStyle(
-            color: Colors.black,
-              fontSize: 28,
-          ),
+            ),
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 26,
+            ),
             keyboardType: TextInputType.number,
             inputFormatters: <TextInputFormatter>[
               FilteringTextInputFormatter.digitsOnly,
@@ -198,16 +195,17 @@ class _EditDoctorPageState extends State<EditDoctorPage> {
           ),
           TextField(
             controller: _teleponDokterController,
-            decoration: InputDecoration(labelText: 'Nomor Telepon',
-            labelStyle: TextStyle(
-            fontFamily: 'poppins',
-                          fontSize: 25,
+            decoration: InputDecoration(
+              labelText: 'Nomor Telepon',
+              labelStyle: TextStyle(
+                fontFamily: 'poppins',
+                fontSize: 22,
               ),
-              ),
-              style: TextStyle(
-            color: Colors.black,
-              fontSize: 28,
-          ),
+            ),
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 26,
+            ),
             keyboardType: TextInputType.number,
             inputFormatters: <TextInputFormatter>[
               FilteringTextInputFormatter.digitsOnly,
@@ -215,16 +213,17 @@ class _EditDoctorPageState extends State<EditDoctorPage> {
           ),
           TextField(
             controller: _rumahSakitDokterController,
-            decoration: InputDecoration(labelText: 'Rumah Sakit',
-            labelStyle: TextStyle(
-            fontFamily: 'poppins',
-                        fontSize: 25,
+            decoration: InputDecoration(
+              labelText: 'Rumah Sakit',
+              labelStyle: TextStyle(
+                fontFamily: 'poppins',
+                fontSize: 22,
               ),
-              ),
-              style: TextStyle(
-            color: Colors.black,
-              fontSize: 28,
-          ),
+            ),
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 26,
+            ),
           ),
           DropdownButtonFormField<String>(
             value: _jenisDokterController.text.isNotEmpty
@@ -249,21 +248,19 @@ class _EditDoctorPageState extends State<EditDoctorPage> {
                 child: Text(specialization),
               );
             }).toList(),
-            decoration: InputDecoration(labelText: 'Jenis Spesialisasi',
-            labelStyle: TextStyle(
-            fontFamily: 'poppins',
-                            fontSize: 25,
+            decoration: InputDecoration(
+              labelText: 'Jenis Spesialisasi',
+              labelStyle: TextStyle(
+                fontFamily: 'poppins',
+                fontSize: 25,
               ),
-              ),
-              style: TextStyle(
-            color: Colors.black,
-          ),
+            ),
+            style: TextStyle(
+              color: Colors.black,
+            ),
           ),
           SizedBox(height: 16.0),
-          Text(
-            'Pilih Jam Praktek:',
-            style: TextStyle(fontSize: 18)           
-          ),
+          Text('Pilih Jam Praktek:', style: TextStyle(fontSize: 18)),
           SizedBox(height: 8.0),
           _buildHourSelection(),
           SizedBox(height: 16.0),
@@ -275,7 +272,14 @@ class _EditDoctorPageState extends State<EditDoctorPage> {
                 MaterialPageRoute(builder: (context) => BottomNavDoctor()),
               );
             },
-            child: Text('Update Data'),
+            child: Text(
+              'Update Data',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'poppins',
+              ),
+            ),
           ),
         ],
       ),
