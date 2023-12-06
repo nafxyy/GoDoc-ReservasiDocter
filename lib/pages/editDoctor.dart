@@ -101,6 +101,7 @@ class _EditDoctorPageState extends State<EditDoctorPage> {
   }
 
   Future<void> _getImage() async {
+    // ignore: deprecated_member_use
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
 
     setState(() {
@@ -125,8 +126,8 @@ class _EditDoctorPageState extends State<EditDoctorPage> {
                 child: _image != null
                     ? Image.file(
                         _image!,
-                        width: 50, // Adjust the width as needed
-                        height: 50, // Adjust the height as needed
+                        width: 70, // Adjust the width as needed
+                        height: 70, // Adjust the height as needed
                         fit: BoxFit.cover, // Use BoxFit.cover for autofit
                       )
                     : Icon(
@@ -136,10 +137,21 @@ class _EditDoctorPageState extends State<EditDoctorPage> {
               ),
             ),
           ),
-          TextField(
-            controller: _namaDokterController,
-            decoration: InputDecoration(labelText: 'Nama Dokter'),
+
+ TextField(
+          controller: _namaDokterController,
+          decoration: InputDecoration(
+            labelText: 'Nama Dokter', 
+            labelStyle: TextStyle(
+              fontSize: 24,
+              fontFamily: 'poppins',
+              color: Colors.black)
+              ),
+          style: TextStyle(
+            color: Colors.black,
+              fontSize: 28,
           ),
+        ),
           DropdownButtonFormField<String>(
             value: _genderDokterController.text.isNotEmpty
                 ? _genderDokterController.text
@@ -158,11 +170,27 @@ class _EditDoctorPageState extends State<EditDoctorPage> {
                 child: Text(specialization),
               );
             }).toList(),
-            decoration: InputDecoration(labelText: 'Jenis Kelamin'),
+            decoration: InputDecoration(labelText: 'Jenis Kelamin',
+            labelStyle: TextStyle(
+            fontFamily: 'poppins',fontSize: 25,
+              ),
+              ),
+              style: TextStyle(
+            color: Colors.black,
+          ),
           ),
           TextField(
             controller: _hargaDokterController,
-            decoration: InputDecoration(labelText: 'harga'),
+            decoration: InputDecoration(labelText: 'Harga',
+            labelStyle: TextStyle(
+            fontFamily: 'poppins',
+                          fontSize: 25,
+              ),
+              ),
+              style: TextStyle(
+            color: Colors.black,
+              fontSize: 28,
+          ),
             keyboardType: TextInputType.number,
             inputFormatters: <TextInputFormatter>[
               FilteringTextInputFormatter.digitsOnly,
@@ -170,7 +198,16 @@ class _EditDoctorPageState extends State<EditDoctorPage> {
           ),
           TextField(
             controller: _teleponDokterController,
-            decoration: InputDecoration(labelText: 'Nomor Telepon'),
+            decoration: InputDecoration(labelText: 'Nomor Telepon',
+            labelStyle: TextStyle(
+            fontFamily: 'poppins',
+                          fontSize: 25,
+              ),
+              ),
+              style: TextStyle(
+            color: Colors.black,
+              fontSize: 28,
+          ),
             keyboardType: TextInputType.number,
             inputFormatters: <TextInputFormatter>[
               FilteringTextInputFormatter.digitsOnly,
@@ -178,7 +215,16 @@ class _EditDoctorPageState extends State<EditDoctorPage> {
           ),
           TextField(
             controller: _rumahSakitDokterController,
-            decoration: InputDecoration(labelText: 'Rumah Sakit'),
+            decoration: InputDecoration(labelText: 'Rumah Sakit',
+            labelStyle: TextStyle(
+            fontFamily: 'poppins',
+                        fontSize: 25,
+              ),
+              ),
+              style: TextStyle(
+            color: Colors.black,
+              fontSize: 28,
+          ),
           ),
           DropdownButtonFormField<String>(
             value: _jenisDokterController.text.isNotEmpty
@@ -203,12 +249,20 @@ class _EditDoctorPageState extends State<EditDoctorPage> {
                 child: Text(specialization),
               );
             }).toList(),
-            decoration: InputDecoration(labelText: 'Jenis Spesialisasi'),
+            decoration: InputDecoration(labelText: 'Jenis Spesialisasi',
+            labelStyle: TextStyle(
+            fontFamily: 'poppins',
+                            fontSize: 25,
+              ),
+              ),
+              style: TextStyle(
+            color: Colors.black,
+          ),
           ),
           SizedBox(height: 16.0),
           Text(
             'Pilih Jam Praktek:',
-            style: TextStyle(fontSize: 18),
+            style: TextStyle(fontSize: 18)           
           ),
           SizedBox(height: 8.0),
           _buildHourSelection(),
@@ -232,7 +286,16 @@ class _EditDoctorPageState extends State<EditDoctorPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Edit Doctor'),
+        backgroundColor: const Color(0xFFB12856),
+        title: Text(
+          'Edit Doctor',
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 25,
+            fontWeight: FontWeight.bold,
+            fontFamily: 'poppins',
+          ),
+        ),
       ),
       body: _buildEditDoctorForm(),
     );
@@ -261,7 +324,7 @@ class _EditDoctorPageState extends State<EditDoctorPage> {
               width: 50,
               height: 50,
               decoration: BoxDecoration(
-                color: isSelected ? Colors.blue : Colors.grey,
+                color: isSelected ? const Color(0xFFB12856) : Colors.grey,
                 borderRadius: BorderRadius.circular(8.0),
               ),
               child: Center(

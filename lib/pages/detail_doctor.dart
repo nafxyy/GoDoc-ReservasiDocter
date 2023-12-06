@@ -210,8 +210,15 @@ class _DoctorDetailState extends State<DoctorDetail> {
 
           return Scaffold(
             appBar: AppBar(
-              backgroundColor: Colors.white,
-              title: Text('Doctor Details'),
+              backgroundColor: const Color(0xFFB12856),
+              title: Text('Doctor Details',
+              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 25,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'poppins',
+                              ),
+                              ),
               actions: [
                 // Favorite button
                 IconButton(
@@ -229,8 +236,11 @@ class _DoctorDetailState extends State<DoctorDetail> {
                 ),
               ],
             ),
-            body: ListView(
+            body: Column(
               children: [
+                 Expanded(
+                child: ListView(
+                  children: [
                 // Doctor details card
                 Card(
                   margin: EdgeInsets.all(16.0),
@@ -460,18 +470,22 @@ class _DoctorDetailState extends State<DoctorDetail> {
                         fontSize: 19,
                         fontWeight: FontWeight.bold,
                         fontFamily: 'poppins',
-                      ),
-                    ),
+                        ),
                   ),
                 ),
+              ),
+            ],
+          ),
+                 ),
               ],
             ),
-          );
-        }
-      },
-    );
-  }
+          
+        );
 
+      }
+    },
+  );
+}
   // Widget to build the doctor's image
   Widget _buildDoctorImage(BuildContext context, String imageFileName) {
     // Calculate the image height based on the screen height

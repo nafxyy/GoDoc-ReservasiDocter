@@ -174,11 +174,18 @@ class _EditPatientPageState extends State<EditPatientPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Edit Patient'),
+        backgroundColor: const Color(0xFFB12856),
+        title: Text(
+          'Edit Patient',
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 25,
+            fontWeight: FontWeight.bold,
+            fontFamily: 'poppins',
+          ),
+        ),
       ),
       body: _buildEditPatientForm(),
     );
   }
-
-  
 }

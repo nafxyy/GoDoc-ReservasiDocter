@@ -12,11 +12,20 @@ class RiwayatPage extends StatefulWidget {
 class _RiwayatPageState extends State<RiwayatPage> {
   final _auth = FirebaseAuth.instance;
 
-   @override
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Riwayat Reservasi"),
+        backgroundColor: const Color(0xFFB12856),
+        title: Text(
+          "Riwayat Reservasi",
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 25,
+            fontWeight: FontWeight.bold,
+            fontFamily: 'poppins',
+          ),
+        ),
       ),
       body: FutureBuilder(
         future: _getReservations(),
@@ -40,18 +49,22 @@ class _RiwayatPageState extends State<RiwayatPage> {
                       Text(
                         reservation.tanggal,
                         style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
+                            color: Colors.black,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'poppins'),
                       ),
                       FutureBuilder(
                         future: _getDoctorDetails(reservation.doctorId),
-                        builder: (context, AsyncSnapshot<DoctorDetails> doctorSnapshot) {
-                          if (doctorSnapshot.connectionState == ConnectionState.waiting) {
+                        builder: (context,
+                            AsyncSnapshot<DoctorDetails> doctorSnapshot) {
+                          if (doctorSnapshot.connectionState ==
+                              ConnectionState.waiting) {
                             return CircularProgressIndicator();
                           } else if (doctorSnapshot.hasError) {
                             return Text('Error: ${doctorSnapshot.error}');
-                          } else if (!doctorSnapshot.hasData || doctorSnapshot.data == null) {
+                          } else if (!doctorSnapshot.hasData ||
+                              doctorSnapshot.data == null) {
                             return Text('Doctor details not found');
                           } else {
                             return cardAccount(
@@ -77,7 +90,8 @@ class _RiwayatPageState extends State<RiwayatPage> {
     );
   }
 
-  Widget cardAccount(String hospitalName, String jam, IconData arrowIcon, VoidCallback onPressed) {
+  Widget cardAccount(String hospitalName, String jam, IconData arrowIcon,
+      VoidCallback onPressed) {
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       color: Color(0xFFB12856),
@@ -109,7 +123,8 @@ class _RiwayatPageState extends State<RiwayatPage> {
             .where('user_id', isEqualTo: user.uid)
             .get();
 
-        List<Reservation> reservations = await Future.wait(reservationSnapshot.docs.map((doc) async {
+        List<Reservation> reservations =
+            await Future.wait(reservationSnapshot.docs.map((doc) async {
           return Reservation(
             tanggal: doc['tanggal'],
             doctorId: doc['id_dokter'],
@@ -148,7 +163,7 @@ class _RiwayatPageState extends State<RiwayatPage> {
 class Reservation {
   final String tanggal;
   final String doctorId;
-  final String jam; 
+  final String jam;
 
   Reservation({
     required this.tanggal,

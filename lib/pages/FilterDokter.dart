@@ -32,10 +32,18 @@ class FilterDokter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
-        title: Text("Dokter Berdasarkan Kategori"),
+        backgroundColor: const Color(0xFFB12856),
+        title: Text(
+          "Dokter Berdasarkan Kategori",
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            fontFamily: 'poppins',
+          ),
+        ),
       ),
       body: FutureBuilder(
         future: FirebaseFirestore.instance
@@ -55,8 +63,10 @@ class FilterDokter extends StatelessWidget {
                   child: const Text(
                     "Filter Dokter",
                     style: TextStyle(
+                      color: Colors.black,
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
+
                     ),
                   ),
                 ),

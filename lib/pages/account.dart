@@ -92,9 +92,9 @@ class AccountPage extends StatelessWidget {
                       Text(
                         'Hello, ${patientData['nama'] ?? 'Patient'}!',
                         style: TextStyle(
-                          
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
+                          
                         ),
                       ),
                       GestureDetector(
