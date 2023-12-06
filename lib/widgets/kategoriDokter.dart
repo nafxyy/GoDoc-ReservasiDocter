@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:pa_mobile/pages/FilterDokter.dart';
-import 'package:provider/provider.dart';
 
 class JenisDokter {
   final String name;
