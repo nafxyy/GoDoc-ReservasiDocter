@@ -32,8 +32,6 @@ class FilterDokter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double screenHeight = MediaQuery.of(context).size.height;
-    double containerHeight = screenHeight * 0.2; // 20% of screen height
 
     return Scaffold(
       appBar: AppBar(
