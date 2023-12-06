@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:pa_mobile/pages/editDoctor.dart';
 import 'package:pa_mobile/pages/login.dart';
 import 'package:pa_mobile/pages/about.dart';
 
@@ -15,10 +16,8 @@ class DoctorAccountPage extends StatelessWidget {
   Future<Map<String, dynamic>> _fetchDoctorData() async {
     User user = _auth.currentUser!;
     try {
-      DocumentSnapshot snapshot = await _firestore
-          .collection('doctors')
-          .doc(user.uid)
-          .get();
+      DocumentSnapshot snapshot =
+          await _firestore.collection('doctors').doc(user.uid).get();
 
       if (snapshot.exists) {
         return snapshot.data() as Map<String, dynamic>;
@@ -32,24 +31,24 @@ class DoctorAccountPage extends StatelessWidget {
   }
 
   Future<String?> _getDoctorImageURL(String userId) async {
-  try {
-    // Retrieve the list of items under the doctor_images/$userId path
-    ListResult listResult =
-        await _storage.ref().child('doctor_images/$userId').list();
+    try {
+      // Retrieve the list of items under the doctor_images/$userId path
+      ListResult listResult =
+          await _storage.ref().child('doctor_images/$userId').list();
 
-    // Check if there are items in the list
-    if (listResult.items.isNotEmpty) {
-      // Retrieve the download URL for the first item in the list
-      return await listResult.items.first.getDownloadURL();
-    } else {
-      // Return null if there are no items (no image found)
+      // Check if there are items in the list
+      if (listResult.items.isNotEmpty) {
+        // Retrieve the download URL for the first item in the list
+        return await listResult.items.first.getDownloadURL();
+      } else {
+        // Return null if there are no items (no image found)
+        return null;
+      }
+    } catch (e) {
+      print('Error fetching doctor image: $e');
       return null;
     }
-  } catch (e) {
-    print('Error fetching doctor image: $e');
-    return null;
   }
-}
 
   Future<void> _logout(BuildContext context) async {
     try {
@@ -64,7 +63,7 @@ class DoctorAccountPage extends StatelessWidget {
   }
 
   @override
- Widget build(BuildContext context) {
+  Widget build(BuildContext context) {
     return FutureBuilder<Map<String, dynamic>>(
       future: _fetchDoctorData(),
       builder: (context, snapshot) {
@@ -96,7 +95,11 @@ class DoctorAccountPage extends StatelessWidget {
                       ),
                       GestureDetector(
                         onTap: () {
-                          // Add navigation to the edit page
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => EditDoctorPage()),
+                          );
                         },
                         child: Text(
                           'Edit',
@@ -112,7 +115,8 @@ class DoctorAccountPage extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 child: Container(
                   height: 200, // Adjust the height as needed
                   decoration: BoxDecoration(
@@ -122,7 +126,8 @@ class DoctorAccountPage extends StatelessWidget {
                   child: FutureBuilder<String?>(
                     future: _getDoctorImageURL(userId),
                     builder: (context, imageSnapshot) {
-                      if (imageSnapshot.connectionState == ConnectionState.waiting) {
+                      if (imageSnapshot.connectionState ==
+                          ConnectionState.waiting) {
                         return Center(child: CircularProgressIndicator());
                       }
 
@@ -163,7 +168,9 @@ class DoctorAccountPage extends StatelessWidget {
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                                SizedBox(height: 10,),
+                                SizedBox(
+                                  height: 10,
+                                ),
                                 Text(
                                   doctorData['telepon'] ?? '081233218712',
                                   style: TextStyle(
@@ -172,7 +179,9 @@ class DoctorAccountPage extends StatelessWidget {
                                     fontWeight: FontWeight.normal,
                                   ),
                                 ),
-                                SizedBox(height: 10,),
+                                SizedBox(
+                                  height: 10,
+                                ),
                                 Text(
                                   doctorData['jenis'] ?? 'Laki - Laki',
                                   style: TextStyle(
@@ -200,13 +209,8 @@ class DoctorAccountPage extends StatelessWidget {
                   ),
                 ),
               ),
-              cardAccount('Riwayat Reservasi', Icons.arrow_forward, Icons.history, () {
-                
-              }),
-              cardAccount('Jadwal Reservasi', Icons.arrow_forward, Icons.calendar_month, () {
-                
-              }),
-              cardAccount('Tentang Aplikasi', Icons.arrow_forward, Icons.info, () {
+              cardAccount('Tentang Aplikasi', Icons.arrow_forward, Icons.info,
+                  () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => AboutPage()),
@@ -222,7 +226,8 @@ class DoctorAccountPage extends StatelessWidget {
     );
   }
 
-  Widget cardAccount(String text, IconData arrowIcon, IconData leftIcon, VoidCallback onPressed) {
+  Widget cardAccount(String text, IconData arrowIcon, IconData leftIcon,
+      VoidCallback onPressed) {
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20.0),
       color: Color(0xFFB12856),

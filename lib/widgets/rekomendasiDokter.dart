@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:pa_mobile/pages/akhir.dart';
+import 'package:pa_mobile/pages/detail_doctor.dart';
 import 'package:pa_mobile/providers/DocIDprovider.dart';
+import 'package:pa_mobile/providers/theme.dart';
 import 'package:provider/provider.dart';
 
 class DoctorCard extends StatelessWidget {
@@ -32,7 +33,7 @@ class DoctorCard extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => DetailDokter(),
+            builder: (context) => DoctorDetail(),
           ),
         );
       },
@@ -69,7 +70,7 @@ class DoctorCard extends StatelessWidget {
                   children: [
                     Text(
                       '$jenis | $hospital',
-                      style: TextStyle(color: Colors.grey),
+                      style: TextStyle(color: Colors.grey,fontSize: 15),
                     ),
                     Row(
                       children: [

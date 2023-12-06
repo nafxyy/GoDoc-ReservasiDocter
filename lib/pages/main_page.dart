@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:pa_mobile/providers/theme.dart';
 
 import 'package:pa_mobile/widgets/kategoriDokter.dart';
 import 'package:pa_mobile/widgets/rekomendasiDokter.dart';
+import 'package:provider/provider.dart';
 
 class MainPage extends StatelessWidget {
   MainPage({super.key});
@@ -32,10 +34,14 @@ class MainPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Tema tema = Provider.of<Tema>(context);
     double screenHeight = MediaQuery.of(context).size.height;
     double containerHeight = screenHeight * 0.2; // 20% of screen height
 
     return Scaffold(
+      backgroundColor: tema.isDarkMode
+          ? tema.display().scaffoldBackgroundColor
+          : tema.displaydark().scaffoldBackgroundColor,
       body: FutureBuilder(
         future: FirebaseFirestore.instance.collection('doctors').get(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -58,7 +64,6 @@ class MainPage extends StatelessWidget {
                             Text(
                               'Hello, User!',
                               style: TextStyle(
-                                color: Colors.black,
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -73,12 +78,15 @@ class MainPage extends StatelessWidget {
                           ],
                         ),
                         IconButton(
-                          icon: const Icon(
-                            Icons.notifications,
-                            color: Colors.black,
+                          icon: Icon(
+                            tema.isDarkMode
+                            ?Icons.light_mode
+                            :Icons.dark_mode,
+                            color: Colors.grey,
+
                           ),
                           onPressed: () {
-                            // Notification
+                            tema.toggleTheme();
                           },
                         ),
                       ],

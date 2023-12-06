@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:pa_mobile/pages/PatientPage.dart';
 import 'package:pa_mobile/pages/doctorPage.dart';
 import 'package:pa_mobile/pages/regis.dart';
 import 'package:pa_mobile/widgets/bottomNavbar.dart';
@@ -38,7 +39,7 @@ class _LoginPageState extends State<LoginPage> {
               context, MaterialPageRoute(builder: (context) => DoctorPage()));
         } else if (role.toLowerCase() == 'patient') {
           Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (context) => BottomNavScreen()));
+              MaterialPageRoute(builder: (context) => PatientPage()));
         }
       } else {
         _showAlert(

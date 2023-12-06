@@ -1,26 +1,24 @@
-import 'dart:io';
-
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/services.dart';
+import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:pa_mobile/widgets/bottomNavbarDoctor.dart';
 import 'package:path/path.dart' as path;
 
-class DoctorPage extends StatefulWidget {
+class EditDoctorPage extends StatefulWidget {
   @override
-  _DoctorPageState createState() => _DoctorPageState();
+  _EditDoctorPageState createState() => _EditDoctorPageState();
 }
 
-class _DoctorPageState extends State<DoctorPage> {
+class _EditDoctorPageState extends State<EditDoctorPage> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-
-  File? _image;
   final picker = ImagePicker();
 
+  File? _image;
   TextEditingController _jenisDokterController = TextEditingController();
   TextEditingController _namaDokterController = TextEditingController();
   TextEditingController _hargaDokterController = TextEditingController();
@@ -28,19 +26,60 @@ class _DoctorPageState extends State<DoctorPage> {
   TextEditingController _genderDokterController = TextEditingController();
   TextEditingController _rumahSakitDokterController = TextEditingController();
 
-  bool _isFirstTime = true;
   List<String> selectedHours = [];
 
   @override
   void initState() {
     super.initState();
-    _checkDoctorDataExists();
+    _fetchDoctorData();
   }
 
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _jenisDokterController.text = 'Umum';
-    _genderDokterController.text = 'Laki - Laki';
+  Future<void> _fetchDoctorData() async {
+    try {
+      User? user = _auth.currentUser;
+      if (user != null) {
+        DocumentSnapshot doctorData =
+            await _firestore.collection('doctors').doc(user.uid).get();
+
+        setState(() {
+          _jenisDokterController.text = doctorData['jenis'];
+          _namaDokterController.text = doctorData['nama'];
+          _hargaDokterController.text = doctorData['harga'];
+          _teleponDokterController.text = doctorData['telepon'];
+          _genderDokterController.text = doctorData['gender'];
+          _rumahSakitDokterController.text = doctorData['rumah_sakit'];
+          selectedHours = List<String>.from(doctorData['available_hours']);
+        });
+      }
+    } catch (e) {
+      print('Error fetching doctor data: $e');
+    }
+  }
+
+  Future<void> _updateDoctorData() async {
+    try {
+      User? user = _auth.currentUser;
+      if (user != null) {
+        await _firestore.collection('doctors').doc(user.uid).update({
+          'jenis': _jenisDokterController.text,
+          'nama': _namaDokterController.text,
+          'harga': _hargaDokterController.text,
+          'telepon': _teleponDokterController.text,
+          'gender': _genderDokterController.text,
+          'rumah_sakit': _rumahSakitDokterController.text,
+          'available_hours': selectedHours,
+        });
+
+        await _uploadImage(user.uid);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Data Updated!'),
+          ),
+        );
+      }
+    } catch (e) {
+      print('Error updating doctor data: $e');
+    }
   }
 
   Future<void> _uploadImage(String userId) async {
@@ -71,43 +110,7 @@ class _DoctorPageState extends State<DoctorPage> {
     });
   }
 
-  Future<void> _checkDoctorDataExists() async {
-    try {
-      User? user = _auth.currentUser;
-      if (user != null) {
-        DocumentSnapshot doctorData =
-            await _firestore.collection('doctors').doc(user.uid).get();
-
-        setState(() {
-          _isFirstTime = !doctorData.exists;
-        });
-      }
-    } catch (e) {
-      print('Error checking doctor data: $e');
-    }
-  }
-
-  Future<void> _saveDoctorData() async {
-    try {
-      User? user = _auth.currentUser;
-      if (user != null) {
-        await _firestore.collection('doctors').doc(user.uid).set({
-          'nama': _namaDokterController.text,
-          'jenis': _jenisDokterController.text,
-          'telepon': _teleponDokterController.text,
-          'harga': _hargaDokterController.text,
-          'available_hours': selectedHours,
-          'rumah_sakit': _rumahSakitDokterController.text,
-          'gender':_genderDokterController.text,
-        });
-        _uploadImage(user.uid);
-      }
-    } catch (e) {
-      print('Error saving doctor data: $e');
-    }
-  }
-
-  Widget _buildDoctorDataForm() {
+  Widget _buildEditDoctorForm() {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: ListView(
@@ -138,7 +141,9 @@ class _DoctorPageState extends State<DoctorPage> {
             decoration: InputDecoration(labelText: 'Nama Dokter'),
           ),
           DropdownButtonFormField<String>(
-            value: _genderDokterController.text,
+            value: _genderDokterController.text.isNotEmpty
+                ? _genderDokterController.text
+                : null,
             onChanged: (String? newValue) {
               setState(() {
                 _genderDokterController.text = newValue!;
@@ -176,7 +181,9 @@ class _DoctorPageState extends State<DoctorPage> {
             decoration: InputDecoration(labelText: 'Rumah Sakit'),
           ),
           DropdownButtonFormField<String>(
-            value: _jenisDokterController.text,
+            value: _jenisDokterController.text.isNotEmpty
+                ? _jenisDokterController.text
+                : null,
             onChanged: (String? newValue) {
               setState(() {
                 _jenisDokterController.text = newValue!;
@@ -208,14 +215,26 @@ class _DoctorPageState extends State<DoctorPage> {
           SizedBox(height: 16.0),
           ElevatedButton(
             onPressed: () {
-              _saveDoctorData();
-              Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (context) => DoctorPage()));
+              _updateDoctorData();
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => BottomNavDoctor()),
+              );
             },
-            child: Text('Simpan Data'),
+            child: Text('Update Data'),
           ),
         ],
       ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Edit Doctor'),
+      ),
+      body: _buildEditDoctorForm(),
     );
   }
 
@@ -257,13 +276,6 @@ class _DoctorPageState extends State<DoctorPage> {
           );
         },
       ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: _isFirstTime ? _buildDoctorDataForm() : BottomNavDoctor(),
     );
   }
 }

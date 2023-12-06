@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:pa_mobile/pages/FilterDokter.dart';
+import 'package:provider/provider.dart';
 
 class JenisDokter {
   final String name;
@@ -18,34 +20,44 @@ class CategoryDokter extends StatelessWidget {
     double height = screenHeight * 0.15;
     double screenWidth = MediaQuery.of(context).size.width;
     double width = screenWidth * 0.15;
-    return Container(
-  margin: const EdgeInsets.all(8.0),
-  child: Column(
-    children: [
-      Expanded(
-        child: Container(
-          width: width,
-          height: height,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: const Color(0xFFB12856),
-            image: DecorationImage(
-              image: AssetImage(jenisDokter.imageUrl),
-              fit: BoxFit.contain,
+
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => FilterDokter(nama: jenisDokter.name)),
+        );
+      },
+      child: Container(
+        margin: const EdgeInsets.all(8.0),
+        child: Column(
+          children: [
+            Expanded(
+              child: Container(
+                width: width,
+                height: height,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: const Color(0xFFB12856),
+                  image: DecorationImage(
+                    image: AssetImage(jenisDokter.imageUrl),
+                    fit: BoxFit.contain,
+                  ),
+                ),
+              ),
             ),
-          ),
+            Text(
+              jenisDokter.name,
+              style: TextStyle(
+                fontSize: 14.0,
+                fontWeight: FontWeight.bold,
+
+              ),
+            ),
+          ],
         ),
       ),
-      Text(
-        jenisDokter.name,
-        style: TextStyle(
-          fontSize: 14.0,
-          fontWeight: FontWeight.bold,
-          color: Colors.black,
-        ),
-      ),
-    ],
-  ),
-);
+    );
   }
 }

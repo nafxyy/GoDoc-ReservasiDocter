@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:pa_mobile/providers/theme.dart';
+import 'package:provider/provider.dart';
+
+
+
 
 class AboutPage extends StatelessWidget {
   AboutPage({Key? key});
@@ -7,8 +12,11 @@ class AboutPage extends StatelessWidget {
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
     double containerHeight = screenHeight * 0.2; // 20% of screen height
-
+    Tema tema = Provider.of<Tema>(context);
     return Scaffold(
+      backgroundColor: tema.isDarkMode
+          ? tema.display().scaffoldBackgroundColor
+          : tema.displaydark().scaffoldBackgroundColor,
       body: ListView(
         children: [
           Padding(

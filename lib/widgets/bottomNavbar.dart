@@ -6,14 +6,14 @@ import 'package:pa_mobile/pages/main_page.dart';
 
 
 
-class BottomNavScreen extends StatefulWidget {
-  const BottomNavScreen();
+class NavScreen extends StatefulWidget {
+  const NavScreen();
 
   @override
-  _BottomNavScreenState createState() => _BottomNavScreenState();
+  _NavScreenState createState() => _NavScreenState();
 }
 
-class _BottomNavScreenState extends State<BottomNavScreen> {
+class _NavScreenState extends State<NavScreen> {
   int currentIndex = 0;
 
   final List<Widget> screens = [

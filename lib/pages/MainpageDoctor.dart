@@ -1,14 +1,22 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:pa_mobile/providers/theme.dart';
+import 'package:provider/provider.dart';
 
 class MainDoctor extends StatelessWidget {
   const MainDoctor({super.key});
 
   @override
   Widget build(BuildContext context) {
+    Tema tema = Provider.of<Tema>(context);
     double screenHeight = MediaQuery.of(context).size.height;
     double containerHeight = screenHeight * 0.2;
 
     return Scaffold(
+      backgroundColor: tema.isDarkMode
+          ? tema.display().scaffoldBackgroundColor
+          : tema.displaydark().scaffoldBackgroundColor,
       body: ListView(
         children: [
           Padding(
@@ -23,7 +31,6 @@ class MainDoctor extends StatelessWidget {
                       Text(
                         'Hello, Doctor!',
                         style: TextStyle(
-                          color: Colors.black,
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                         ),
@@ -38,12 +45,12 @@ class MainDoctor extends StatelessWidget {
                     ],
                   ),
                   IconButton(
-                    icon: const Icon(
-                      Icons.notifications,
-                      color: Colors.black,
+                    icon: Icon(
+                      tema.isDarkMode ? Icons.light_mode : Icons.dark_mode,
+                      color: Colors.grey,
                     ),
                     onPressed: () {
-                      // Notification
+                      tema.toggleTheme();
                     },
                   ),
                 ],
@@ -109,7 +116,7 @@ class MainDoctor extends StatelessWidget {
               ),
             ),
           ),
-           const Padding(
+          Padding(
             padding: EdgeInsets.only(top: 16.0, left: 16.0, right: 16.0),
             child: Text(
               "Jadwal Reservasi Pasien",
@@ -119,9 +126,74 @@ class MainDoctor extends StatelessWidget {
               ),
             ),
           ),
-          
+          // Use ReservationCard widget here
+          ReservationCard(),
         ],
       ),
+    );
+  }
+}
+
+class ReservationCard extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    String idDokter = FirebaseAuth.instance.currentUser!.uid;
+
+    return FutureBuilder<QuerySnapshot>(
+      future: FirebaseFirestore.instance
+          .collection('reservations')
+          .where('id_dokter', isEqualTo: idDokter)
+          .get(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return CircularProgressIndicator();
+        } else if (snapshot.hasError) {
+          return Text('Error: ${snapshot.error}');
+        } else if (!snapshot.hasData || snapshot.data == null) {
+          return Text('No reservation data found');
+        } else {
+          var reservations = snapshot.data!.docs;
+
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: reservations.map((reservation) {
+              String tanggal = reservation['tanggal'];
+              String jam = reservation['jam'];
+              String userId = reservation['user_id'];
+
+              return FutureBuilder<DocumentSnapshot>(
+                future: FirebaseFirestore.instance
+                    .collection('Patients')
+                    .doc(userId)
+                    .get(),
+                builder: (context, userSnapshot) {
+                  if (userSnapshot.connectionState == ConnectionState.waiting) {
+                    return CircularProgressIndicator();
+                  } else if (userSnapshot.hasError) {
+                    return Text('Error: ${userSnapshot.error}');
+                  } else if (!userSnapshot.hasData ||
+                      userSnapshot.data == null) {
+                    return Text('Patient data not found');
+                  } else {
+                    var userData = userSnapshot.data!;
+                    String name = userData['nama'];
+                    String telepon = userData['telepon'];
+
+                    return Card(
+                      margin: EdgeInsets.all(16.0),
+                      color: Colors.grey[200],
+                      child: ListTile(
+                        title: Text('Tanggal: $tanggal\nJam: $jam.00'),
+                        subtitle: Text('Pasien: $name\nTelepon: $telepon'),
+                      ),
+                    );
+                  }
+                },
+              );
+            }).toList(),
+          );
+        }
+      },
     );
   }
 }
