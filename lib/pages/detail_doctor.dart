@@ -219,7 +219,7 @@ class _DoctorDetailState extends State<DoctorDetail> {
               title: Text(
                 'Doctor Details',
                 style: TextStyle(
-                  color: Colors.black,
+                  color: Colors.white,
                   fontSize: 25,
                   fontWeight: FontWeight.bold,
                   fontFamily: 'poppins',
@@ -228,13 +228,13 @@ class _DoctorDetailState extends State<DoctorDetail> {
               actions: [
                 // Favorite button
                 IconButton(
-                  color: Colors.black,
+                  color: Colors.white,
                   icon: Icon(Icons.favorite),
                   onPressed: _toggleFavorite,
                 ),
                 // Share button
                 IconButton(
-                  color: Colors.black,
+                  color: Colors.white,
                   icon: Icon(Icons.share),
                   onPressed: () {
                     // Share functionality
@@ -459,8 +459,19 @@ class _DoctorDetailState extends State<DoctorDetail> {
                                   selectedHour.isNotEmpty)
                               ? _bookDoctor
                               : null,
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFFB12856),
+                          
+                          style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.resolveWith<Color>(
+                              (Set<MaterialState> states) {
+                                if (states.contains(MaterialState.disabled)) {
+                                  // Color when the button is disabled
+                                  return Colors.grey;
+                                }
+                                // Color when the button is enabled
+                                return const Color(0xFFB12856);
+                              },
+                            ),
                           ),
                           child: Text(
                             'BOOK DOCTOR',

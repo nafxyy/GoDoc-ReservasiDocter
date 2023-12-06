@@ -54,7 +54,6 @@ class AboutPage extends StatelessWidget {
             child: Text(
               'GoDoc',
               style: TextStyle(
-                color: Colors.black,
                 fontSize: 35,
                 fontWeight: FontWeight.bold,
               ),
@@ -71,7 +70,7 @@ class AboutPage extends StatelessWidget {
                       'assets/dokter.png', // Ganti dengan path gambar sesuai kebutuhan
                       width: double.infinity,
                       height: containerHeight,
-                      fit: BoxFit.cover,
+                      fit: BoxFit.contain,
                     ),
                     ListTile(
                       title: Text(

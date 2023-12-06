@@ -100,102 +100,107 @@ class _EditPatientPageState extends State<EditPatientPage> {
   }
 
   Widget _buildEditPatientForm() {
-  Tema tema = Provider.of<Tema>(context);
-  TextTheme textTheme = tema.isDarkMode ? tema.teks : tema.teksdark;
+    Tema tema = Provider.of<Tema>(context);
+    TextTheme textTheme = tema.isDarkMode ? tema.teks : tema.teksdark;
 
-  return Padding(
-    padding: const EdgeInsets.all(16.0),
-    child: ListView(
-      children: [
-        GestureDetector(
-          onTap: _getImage,
-          child: ClipOval(
-            child: CircleAvatar(
-              radius: 50,
-              backgroundColor: Colors.grey[200],
-              child: _image != null
-                  ? Image.file(
-                      _image!,
-                      width: 50,
-                      height: 50,
-                      fit: BoxFit.cover,
-                    )
-                  : Icon(
-                      Icons.camera_alt,
-                      size: 40,
-                    ),
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: ListView(
+        children: [
+          GestureDetector(
+            onTap: _getImage,
+            child: ClipOval(
+              child: CircleAvatar(
+                radius: 50,
+                backgroundColor: Colors.grey[200],
+                child: _image != null
+                    ? Image.file(
+                        _image!,
+                        width: 50,
+                        height: 50,
+                        fit: BoxFit.cover,
+                      )
+                    : Icon(
+                        Icons.camera_alt,
+                        size: 40,
+                      ),
+              ),
             ),
           ),
-        ),
-        TextField(
-          controller: _namaController,
-          decoration: InputDecoration(
-            labelText: 'Nama Pasien',
-            labelStyle: textTheme.bodyMedium,
+          TextField(
+            controller: _namaController,
+            decoration: InputDecoration(
+              labelText: 'Nama Pasien',
+              labelStyle: textTheme.bodyMedium,
+            ),
+            style: textTheme.bodySmall,
           ),
-          style: textTheme.bodySmall,
-        ),
-        DropdownButtonFormField<String>(
-          value: _genderController.text.isNotEmpty
-              ? _genderController.text
-              : null,
-          onChanged: (String? newValue) {
-            setState(() {
-              _genderController.text = newValue!;
-            });
-          },
-          items: [
-            'Laki - Laki',
-            'Perempuan',
-          ].map((String specialization) {
-            return DropdownMenuItem<String>(
-              value: specialization,
-              child: Text(
-                specialization,
-                style: textTheme.bodySmall,
+          DropdownButtonFormField<String>(
+            value: _genderController.text.isNotEmpty
+                ? _genderController.text
+                : null,
+            onChanged: (String? newValue) {
+              setState(() {
+                _genderController.text = newValue!;
+              });
+            },
+            items: [
+              'Laki - Laki',
+              'Perempuan',
+            ].map((String specialization) {
+              return DropdownMenuItem<String>(
+                value: specialization,
+                child: Text(
+                  specialization,
+                  style: textTheme.bodySmall,
+                ),
+              );
+            }).toList(),
+            dropdownColor: Color(0xFFB12856),
+            decoration: InputDecoration(
+              labelText: 'Jenis Kelamin',
+              labelStyle: textTheme.bodyMedium,
+            ),
+          ),
+          TextField(
+            controller: _teleponController,
+            decoration: InputDecoration(
+              labelText: 'Nomor Telepon',
+              labelStyle: textTheme.bodyMedium,
+            ),
+            style: textTheme.bodySmall,
+            keyboardType: TextInputType.number,
+            inputFormatters: <TextInputFormatter>[
+              FilteringTextInputFormatter.digitsOnly,
+            ],
+          ),
+          SizedBox(height: 20),
+          ElevatedButton(
+            onPressed: () {
+              _updatePatientData();
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => NavScreen()),
+              );
+            },
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all<Color>(
+                const Color(0xFFB12856),
               ),
-            );
-          }).toList(),
-          dropdownColor: Color(0xFFB12856),
-          decoration: InputDecoration(
-            labelText: 'Jenis Kelamin',
-            labelStyle: textTheme.bodyMedium,
-          ),
-        ),
-        TextField(
-          controller: _teleponController,
-          decoration: InputDecoration(
-            labelText: 'Nomor Telepon',
-            labelStyle: textTheme.bodyMedium,
-          ),
-          style: textTheme.bodySmall,
-          keyboardType: TextInputType.number,
-          inputFormatters: <TextInputFormatter>[
-            FilteringTextInputFormatter.digitsOnly,
-          ],
-        ),
-        SizedBox(height: 20),
-        ElevatedButton(
-          onPressed: () {
-            _updatePatientData();
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => NavScreen()),
-            );
-          },
-          child: Text(
-            'Update Data',
-           style: TextStyle(
+            ),
+            child: Text(
+              'Update Data',
+              style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
                 fontFamily: 'poppins',
               ),
+            ),
           ),
-        ),
-      ],
-    ),
-  );
-}
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -209,7 +214,7 @@ class _EditPatientPageState extends State<EditPatientPage> {
         title: Text(
           'Edit Patient',
           style: TextStyle(
-            color: Colors.black,
+            color: Colors.white,
             fontSize: 25,
             fontWeight: FontWeight.bold,
             fontFamily: 'poppins',
