@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:pa_mobile/firebase_options.dart';
 import 'package:pa_mobile/pages/intro_screen.dart';
-import 'package:pa_mobile/pages/login.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:pa_mobile/providers/DocIDprovider.dart';
 import 'package:pa_mobile/providers/theme.dart';
-import 'package:pa_mobile/widgets/bottomNavbar.dart';
 import 'package:pa_mobile/widgets/bottomNavbarDoctor.dart';
 import 'package:provider/provider.dart';
 
@@ -44,9 +42,21 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: LoginPage(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => Tema())
+      ],
+      child: Builder(
+        builder: (context) {
+          return MaterialApp(
+            theme: Provider.of<Tema>(context).display(),
+            darkTheme: Provider.of<Tema>(context).displaydark(),
+            themeMode: Provider.of<Tema>(context).getThemeMode(),
+            debugShowCheckedModeBanner: false,
+            home: Intro(),
+          );
+        }
+      ),
     );
   }
 }

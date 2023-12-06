@@ -3,8 +3,7 @@ import 'package:intro_screen_onboarding_flutter/introduction.dart';
 import 'package:intro_screen_onboarding_flutter/introscreenonboarding.dart';
 import 'package:pa_mobile/pages/login.dart';
 import 'package:provider/provider.dart';
-
-import '../providers/theme.dart';
+import 'package:pa_mobile/providers/theme.dart';
 
 class Intro extends StatelessWidget {
   Intro({super.key});
