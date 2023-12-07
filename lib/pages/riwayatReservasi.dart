@@ -118,32 +118,45 @@ class _RiwayatPageState extends State<RiwayatPage> {
   }
 
   Future<List<Reservation>> _getReservations() async {
-    try {
-      User? user = _auth.currentUser;
-      if (user != null) {
-        QuerySnapshot reservationSnapshot = await FirebaseFirestore.instance
-            .collection('reservations')
-            .where('user_id', isEqualTo: user.uid)
-            .get();
+  try {
+    User? user = _auth.currentUser;
+    if (user != null) {
+      QuerySnapshot reservationSnapshot = await FirebaseFirestore.instance
+          .collection('reservations')
+          .where('user_id', isEqualTo: user.uid)
+          .get();
 
-        List<Reservation> reservations =
-            await Future.wait(reservationSnapshot.docs.map((doc) async {
-          return Reservation(
-            tanggal: doc['tanggal'],
-            doctorId: doc['id_dokter'],
-            jam: doc['jam'],
-          );
-        }));
+      List<Reservation> reservations =
+          await Future.wait(reservationSnapshot.docs.map((doc) async {
+        return Reservation(
+          tanggal: doc['tanggal'],
+          doctorId: doc['id_dokter'],
+          jam: doc['jam'],
+        );
+      }));
 
-        return reservations;
-      } else {
-        return [];
-      }
-    } catch (e) {
-      print('Error fetching reservation data: $e');
+      // Sort the reservations list based on tanggal and jam
+      reservations.sort((a, b) {
+        // First, compare by tanggal
+        int tanggalComparison = a.tanggal.compareTo(b.tanggal);
+        if (tanggalComparison != 0) {
+          return tanggalComparison;
+        }
+        // If tanggal is the same, compare by jam
+        return a.jam.compareTo(b.jam);
+      });
+
+      return reservations;
+    } else {
       return [];
     }
+  } catch (e) {
+    print('Error fetching reservation data: $e');
+    return [];
   }
+}
+
+
 
   Future<DoctorDetails> _getDoctorDetails(String doctorId) async {
     try {
