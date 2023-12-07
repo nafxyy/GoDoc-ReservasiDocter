@@ -219,7 +219,6 @@ class _DoctorDetailState extends State<DoctorDetail> {
               title: Text(
                 'Doctor Details',
                 style: TextStyle(
-                  color: Colors.white,
                   fontSize: 25,
                   fontWeight: FontWeight.bold,
                   fontFamily: 'poppins',
@@ -228,13 +227,11 @@ class _DoctorDetailState extends State<DoctorDetail> {
               actions: [
                 // Favorite button
                 IconButton(
-                  color: Colors.white,
                   icon: Icon(Icons.favorite),
                   onPressed: _toggleFavorite,
                 ),
                 // Share button
                 IconButton(
-                  color: Colors.white,
                   icon: Icon(Icons.share),
                   onPressed: () {
                     // Share functionality

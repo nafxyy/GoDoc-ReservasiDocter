@@ -27,7 +27,6 @@ class _RiwayatPageState extends State<RiwayatPage> {
         title: Text(
           "Riwayat Reservasi",
           style: TextStyle(
-            color: Colors.white,
             fontSize: 25,
             fontWeight: FontWeight.bold,
             fontFamily: 'poppins',

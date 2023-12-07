@@ -44,7 +44,6 @@ class FilterDokter extends StatelessWidget {
         title: Text(
           "Dokter Berdasarkan Kategori",
           style: TextStyle(
-            color: Colors.white,
             fontSize: 20,
             fontWeight: FontWeight.bold,
             fontFamily: 'poppins',
