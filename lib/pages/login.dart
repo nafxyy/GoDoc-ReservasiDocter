@@ -85,6 +85,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     Tema tema = Provider.of<Tema>(context);
+     String imagePath = tema.isDarkMode ? 'assets/logo_hitam.png' : 'assets/logo_putih.png';
     return Scaffold(
       backgroundColor: tema.isDarkMode
           ? tema.display().scaffoldBackgroundColor
@@ -101,7 +102,7 @@ class _LoginPageState extends State<LoginPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Image.asset(
-                    'assets/logo_putih.png', // Replace with the path to your image
+                    imagePath, // Replace with the path to your image
                     height: 300,
                     width: 200,
                   ),

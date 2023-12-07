@@ -94,7 +94,8 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     Tema tema = Provider.of<Tema>(context);
-
+    TextTheme textTheme = tema.isDarkMode ? tema.teks : tema.teksdark;
+    String imagePath = tema.isDarkMode ? 'assets/logo_hitam.png' : 'assets/logo_putih.png';
     return Scaffold(
       backgroundColor: tema.isDarkMode
           ? tema.display().scaffoldBackgroundColor
@@ -114,7 +115,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       IconButton(
                         icon: Icon(
                           Icons.arrow_back,
-                          color: Colors.white,
+                          color:textTheme.bodyMedium?.color,
                         ),
                         onPressed: () {
                           Navigator.pop(
@@ -124,7 +125,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     ],
                   ),
                   Image.asset(
-                    'assets/logo_putih.png', // Replace with the path to your image
+                    imagePath, // Replace with the path to your image
                     height: 300,
                     width: 200,
                   ),
