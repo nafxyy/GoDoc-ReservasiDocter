@@ -6,8 +6,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:pa_mobile/providers/theme.dart';
 import 'package:pa_mobile/widgets/bottomNavbarDoctor.dart';
 import 'package:path/path.dart' as path;
+import 'package:provider/provider.dart';
 
 class DoctorPage extends StatefulWidget {
   @override
@@ -87,27 +89,56 @@ class _DoctorPageState extends State<DoctorPage> {
     }
   }
 
-  Future<void> _saveDoctorData() async {
-    try {
-      User? user = _auth.currentUser;
-      if (user != null) {
-        await _firestore.collection('doctors').doc(user.uid).set({
-          'nama': _namaDokterController.text,
-          'jenis': _jenisDokterController.text,
-          'telepon': _teleponDokterController.text,
-          'harga': _hargaDokterController.text,
-          'available_hours': selectedHours,
-          'rumah_sakit': _rumahSakitDokterController.text,
-          'gender':_genderDokterController.text,
-        });
-        _uploadImage(user.uid);
-      }
-    } catch (e) {
-      print('Error saving doctor data: $e');
-    }
-  }
+ Future<void> _saveDoctorData() async {
+  try {
+    User? user = _auth.currentUser;
 
+    // Check if any required field is empty
+    if (_namaDokterController.text.isEmpty ||
+        _jenisDokterController.text.isEmpty ||
+        _teleponDokterController.text.isEmpty ||
+        _hargaDokterController.text.isEmpty ||
+        _rumahSakitDokterController.text.isEmpty ||
+        _genderDokterController.text.isEmpty ||
+        selectedHours.isEmpty) {
+      // Show Snackbar if any field is empty
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Data Belum Lengkap'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return; // Stop execution if any field is empty
+    }
+
+    if (user != null) {
+      // Convert the selectedHours to integers and then sort
+      List<int> sortedHours = selectedHours.map(int.parse).toList();
+      sortedHours.sort();
+
+      // Convert the sortedHours back to strings
+      List<String> sortedHoursStrings =
+          sortedHours.map((hour) => hour.toString()).toList();
+
+      await _firestore.collection('doctors').doc(user.uid).set({
+        'nama': _namaDokterController.text,
+        'jenis': _jenisDokterController.text,
+        'telepon': _teleponDokterController.text,
+        'harga': _hargaDokterController.text,
+        'available_hours': sortedHoursStrings,
+        'rumah_sakit': _rumahSakitDokterController.text,
+        'gender': _genderDokterController.text,
+      });
+      _uploadImage(user.uid);
+    }
+  } catch (e) {
+    print('Error saving doctor data: $e');
+  }
+}
   Widget _buildDoctorDataForm() {
+    Tema tema = Provider.of<Tema>(context);
+    TextTheme textTheme = tema.isDarkMode ? tema.teks : tema.teksdark;
+
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: ListView(
@@ -117,14 +148,13 @@ class _DoctorPageState extends State<DoctorPage> {
             child: ClipOval(
               child: CircleAvatar(
                 radius: 50,
-                backgroundColor:
-                    Colors.grey[200], // Set background color as needed
+                backgroundColor: Colors.grey[200],
                 child: _image != null
                     ? Image.file(
                         _image!,
-                        width: 50, // Adjust the width as needed
-                        height: 50, // Adjust the height as needed
-                        fit: BoxFit.cover, // Use BoxFit.cover for autofit
+                        width: 50,
+                        height: 50,
+                        fit: BoxFit.cover,
                       )
                     : Icon(
                         Icons.camera_alt,
@@ -135,7 +165,11 @@ class _DoctorPageState extends State<DoctorPage> {
           ),
           TextField(
             controller: _namaDokterController,
-            decoration: InputDecoration(labelText: 'Nama Dokter'),
+            decoration: InputDecoration(
+              labelText: 'Nama Dokter',
+              labelStyle: textTheme.bodyMedium,
+            ),
+            style: textTheme.bodySmall,
           ),
           DropdownButtonFormField<String>(
             value: _genderDokterController.text,
@@ -150,14 +184,25 @@ class _DoctorPageState extends State<DoctorPage> {
             ].map((String specialization) {
               return DropdownMenuItem<String>(
                 value: specialization,
-                child: Text(specialization),
+                child: Text(
+                  specialization,
+                  style: textTheme.bodySmall,
+                ),
               );
             }).toList(),
-            decoration: InputDecoration(labelText: 'Jenis Kelamin'),
+            decoration: InputDecoration(
+              labelText: 'Jenis Kelamin',
+              labelStyle: textTheme.bodyMedium,
+            ),
+            dropdownColor: Color(0xFFB12856),
           ),
           TextField(
             controller: _hargaDokterController,
-            decoration: InputDecoration(labelText: 'harga'),
+            decoration: InputDecoration(
+              labelText: 'Harga',
+              labelStyle: textTheme.bodyMedium,
+            ),
+            style: textTheme.bodySmall,
             keyboardType: TextInputType.number,
             inputFormatters: <TextInputFormatter>[
               FilteringTextInputFormatter.digitsOnly,
@@ -165,7 +210,11 @@ class _DoctorPageState extends State<DoctorPage> {
           ),
           TextField(
             controller: _teleponDokterController,
-            decoration: InputDecoration(labelText: 'Nomor Telepon'),
+            decoration: InputDecoration(
+              labelText: 'Nomor Telepon',
+              labelStyle: textTheme.bodyMedium,
+            ),
+            style: textTheme.bodySmall,
             keyboardType: TextInputType.number,
             inputFormatters: <TextInputFormatter>[
               FilteringTextInputFormatter.digitsOnly,
@@ -173,7 +222,11 @@ class _DoctorPageState extends State<DoctorPage> {
           ),
           TextField(
             controller: _rumahSakitDokterController,
-            decoration: InputDecoration(labelText: 'Rumah Sakit'),
+            decoration: InputDecoration(
+              labelText: 'Rumah Sakit',
+              labelStyle: textTheme.bodyMedium,
+            ),
+            style: textTheme.bodySmall,
           ),
           DropdownButtonFormField<String>(
             value: _jenisDokterController.text,
@@ -193,15 +246,22 @@ class _DoctorPageState extends State<DoctorPage> {
             ].map((String specialization) {
               return DropdownMenuItem<String>(
                 value: specialization,
-                child: Text(specialization),
+                child: Text(
+                  specialization,
+                  style: textTheme.bodySmall,
+                ),
               );
             }).toList(),
-            decoration: InputDecoration(labelText: 'Jenis Spesialisasi'),
+            decoration: InputDecoration(
+              labelText: 'Jenis Spesialisasi',
+              labelStyle: textTheme.bodyMedium,
+            ),
+            dropdownColor: Color(0xFFB12856),
           ),
           SizedBox(height: 16.0),
           Text(
             'Pilih Jam Praktek:',
-            style: TextStyle(fontSize: 18),
+            style: textTheme.bodyMedium,
           ),
           SizedBox(height: 8.0),
           _buildHourSelection(),
@@ -209,10 +269,17 @@ class _DoctorPageState extends State<DoctorPage> {
           ElevatedButton(
             onPressed: () {
               _saveDoctorData();
-              Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (context) => DoctorPage()));
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => DoctorPage()),
+              );
             },
-            child: Text('Simpan Data'),
+            child: Text(
+              'Simpan Data',
+              style: textTheme.bodyMedium?.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ),
         ],
       ),
@@ -262,7 +329,11 @@ class _DoctorPageState extends State<DoctorPage> {
 
   @override
   Widget build(BuildContext context) {
+    Tema tema = Provider.of<Tema>(context);
     return Scaffold(
+      backgroundColor: tema.isDarkMode
+          ? tema.display().scaffoldBackgroundColor
+          : tema.displaydark().scaffoldBackgroundColor,
       body: _isFirstTime ? _buildDoctorDataForm() : BottomNavDoctor(),
     );
   }

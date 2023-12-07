@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:pa_mobile/providers/theme.dart';
 import 'package:pa_mobile/widgets/rekomendasiDokter.dart';
+import 'package:provider/provider.dart';
 
 class FilterDokter extends StatelessWidget {
   final String nama;
@@ -32,12 +34,21 @@ class FilterDokter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double screenHeight = MediaQuery.of(context).size.height;
-    double containerHeight = screenHeight * 0.2; // 20% of screen height
-
+    Tema tema = Provider.of<Tema>(context);
     return Scaffold(
+      backgroundColor: tema.isDarkMode
+          ? tema.display().scaffoldBackgroundColor
+          : tema.displaydark().scaffoldBackgroundColor,
       appBar: AppBar(
-        title: Text("Dokter Berdasarkan Kategori"),
+        backgroundColor: const Color(0xFFB12856),
+        title: Text(
+          "Dokter Berdasarkan Kategori",
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            fontFamily: 'poppins',
+          ),
+        ),
       ),
       body: FutureBuilder(
         future: FirebaseFirestore.instance
@@ -57,8 +68,10 @@ class FilterDokter extends StatelessWidget {
                   child: const Text(
                     "Filter Dokter",
                     style: TextStyle(
+                      // color: Colors.black,
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
+
                     ),
                   ),
                 ),

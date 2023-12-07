@@ -5,6 +5,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:pa_mobile/pages/editDoctor.dart';
 import 'package:pa_mobile/pages/login.dart';
 import 'package:pa_mobile/pages/about.dart';
+import 'package:pa_mobile/providers/theme.dart';
+import 'package:provider/provider.dart';
 
 class DoctorAccountPage extends StatelessWidget {
   DoctorAccountPage({Key? key});
@@ -75,8 +77,11 @@ class DoctorAccountPage extends StatelessWidget {
 
         Map<String, dynamic> doctorData = snapshot.data ?? {};
         String userId = _auth.currentUser!.uid;
-
+        Tema tema = Provider.of<Tema>(context);
         return Scaffold(
+          backgroundColor: tema.isDarkMode
+              ? tema.display().scaffoldBackgroundColor
+              : tema.displaydark().scaffoldBackgroundColor,
           body: ListView(
             children: [
               Padding(
@@ -88,7 +93,6 @@ class DoctorAccountPage extends StatelessWidget {
                       Text(
                         'Hello, ${doctorData['nama'] ?? 'Doctor'}!',
                         style: TextStyle(
-                          color: Colors.black,
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                         ),
@@ -104,7 +108,6 @@ class DoctorAccountPage extends StatelessWidget {
                         child: Text(
                           'Edit',
                           style: TextStyle(
-                            color: Colors.black,
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
                           ),

@@ -92,9 +92,9 @@ class AccountPage extends StatelessWidget {
                       Text(
                         'Hello, ${patientData['nama'] ?? 'Patient'}!',
                         style: TextStyle(
-                          
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
+                          
                         ),
                       ),
                       GestureDetector(
@@ -108,7 +108,6 @@ class AccountPage extends StatelessWidget {
                         child: Text(
                           'Edit',
                           style: TextStyle(
-                            color: Colors.black,
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
                           ),

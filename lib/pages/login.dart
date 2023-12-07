@@ -4,10 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pa_mobile/pages/PatientPage.dart';
 import 'package:pa_mobile/pages/doctorPage.dart';
 import 'package:pa_mobile/pages/regis.dart';
-import 'package:pa_mobile/widgets/bottomNavbar.dart';
-import 'package:provider/provider.dart';
-
-import '../providers/theme.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -41,8 +37,8 @@ class _LoginPageState extends State<LoginPage> {
           Navigator.pushReplacement(
               context, MaterialPageRoute(builder: (context) => DoctorPage()));
         } else if (role.toLowerCase() == 'patient') {
-          Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (context) => PatientPage()));
+          Navigator.pushReplacement(
+              context, MaterialPageRoute(builder: (context) => PatientPage()));
         }
       } else {
         _showAlert(
@@ -115,8 +111,10 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     child: TextField(
                       controller: _emailController,
+                      style: TextStyle(color: Colors.black),
                       decoration: InputDecoration(
                         labelText: 'Email',
+                        labelStyle: TextStyle(color: Colors.black),
                         border: OutlineInputBorder(
                           borderSide:
                               BorderSide(color: Colors.black), // Warna hitam
@@ -133,8 +131,10 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     child: TextField(
                       controller: _passwordController,
+                      style: TextStyle(color: Colors.black),
                       decoration: InputDecoration(
                         labelText: 'Password',
+                        labelStyle: TextStyle(color: Colors.black),
                         border: OutlineInputBorder(
                           borderSide:
                               BorderSide(color: Colors.black), // Warna hitam
@@ -153,7 +153,10 @@ class _LoginPageState extends State<LoginPage> {
                       child: Center(
                         child: Text(
                           'Login',
-                          style: TextStyle(fontSize: 18.0),
+                          style: TextStyle(
+                            fontSize: 20.0,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                     ),

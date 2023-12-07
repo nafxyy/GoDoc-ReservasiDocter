@@ -15,7 +15,8 @@ class _RegisterPageState extends State<RegisterPage> {
 
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
   String _selectedRole = 'Patient'; // Default role
 
   List<String> _roles = ['Patient', 'Doctor'];
@@ -23,44 +24,51 @@ class _RegisterPageState extends State<RegisterPage> {
   Future<void> _register() async {
     try {
       if (_passwordController.text.length < 6) {
-        _showAlert('Password Error', 'Password must be at least 6 characters long.');
+        _showAlert(
+            'Password Error', 'Password must be at least 6 characters long.');
         return;
       }
 
       if (_passwordController.text != _confirmPasswordController.text) {
-        _showAlert('Password Mismatch', 'Password and Confirm Password do not match.');
+        _showAlert(
+            'Password Mismatch', 'Password and Confirm Password do not match.');
         return;
       }
 
-      UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
+      UserCredential userCredential =
+          await _auth.createUserWithEmailAndPassword(
         email: _emailController.text,
         password: _passwordController.text,
       );
 
-      // Set user role in Firestore
       await _firestore.collection('users').doc(userCredential.user?.uid).set({
         'email': _emailController.text,
         'role': _selectedRole,
       });
-
       _showAlert('Registration Successful', 'You can now log in.');
 
-      // Navigate back to the login page.
-      Navigator.pop(context);
+      Future.delayed(Duration(seconds: 10), () {
+        Navigator.of(context).pop();
+      });
+
+
     } catch (e) {
       print('Error registering user: $e');
       String errorMessage = 'An error occurred during registration.';
 
       if (e is FirebaseAuthException) {
         if (e.code == 'email-already-in-use') {
-          errorMessage = 'This email is already in use. Please choose a different email.';
+          errorMessage =
+              'This email is already in use. Please choose a different email.';
         } else {
-          errorMessage = 'An unexpected error occurred. Please try again later.';
+          errorMessage =
+              'An unexpected error occurred. Please try again later.';
         }
       }
 
       _showAlert('Registration Error', errorMessage);
     }
+
   }
 
   void _showAlert(String title, String message) {
@@ -84,138 +92,145 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   @override
-Widget build(BuildContext context) {
-  Tema tema = Provider.of(context);
-  return Scaffold(
-    backgroundColor: tema.isDarkMode
-          ? tema.display().scaffoldBackgroundColor
-          : tema.displaydark().scaffoldBackgroundColor,
-    body: Container(
-      decoration: BoxDecoration(
-        color: Colors.grey[800], // Background color
-      ),
-      child: ListView(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    IconButton(
-                      icon: Icon(
-                        Icons.arrow_back,
-                        color: Colors.white,
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Container(
+        decoration: BoxDecoration(
+          color: Colors.grey[800], // Background color
+        ),
+        child: ListView(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      IconButton(
+                        icon: Icon(
+                          Icons.arrow_back,
+                          color: Colors.white,
+                        ),
+                        onPressed: () {
+                          Navigator.pop(
+                              context); // Kembali ke halaman sebelumnya
+                        },
                       ),
-                      onPressed: () {
-                        Navigator.pop(context); // Kembali ke halaman sebelumnya
-                      },
-                    ),
-                  ],
-                ),
-                Image.asset(
-                  'assets/logo_putih.png', // Replace with the path to your image
-                  height: 300,
-                  width: 200,
-                ),
-                SizedBox(height: 5.0),
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white, // Form background color
-                    borderRadius: BorderRadius.circular(8.0),
+                    ],
                   ),
-                  child: TextField(
-                    controller: _emailController,
-                    decoration: InputDecoration(
-                      labelText: 'Email',
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.black), // Warna hitam
-                      ),
-                      contentPadding: EdgeInsets.all(12.0),
-                    ),
+                  Image.asset(
+                    'assets/logo_putih.png', // Replace with the path to your image
+                    height: 300,
+                    width: 200,
                   ),
-                ),
-                SizedBox(height: 16.0),
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white, // Form background color
-                    borderRadius: BorderRadius.circular(8.0),
-                  ),
-                  child: TextField(
-                    controller: _passwordController,
-                    decoration: InputDecoration(
-                      labelText: 'Password',
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.black), // Warna hitam
-                      ),
-                      contentPadding: EdgeInsets.all(12.0),
-                    ),
-                    obscureText: true,
-                  ),
-                ),
-                SizedBox(height: 16.0),
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white, // Form background color
-                    borderRadius: BorderRadius.circular(8.0),
-                  ),
-                  child: TextField(
-                    controller: _confirmPasswordController,
-                    decoration: InputDecoration(
-                      labelText: 'Confirm Password',
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.black), // Warna hitam
-                      ),
-                      contentPadding: EdgeInsets.all(12.0),
-                    ),
-                    obscureText: true,
-                  ),
-                ),
-                DropdownButton<String>(
-                  value: _selectedRole,
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      _selectedRole = newValue!;
-                    });
-                  },
-                  items: _roles.map((String role) {
-                    return DropdownMenuItem<String>(
-                      value: role,
-                      child: Text(
-                        role,
-                        style: TextStyle(color: Colors.white), // Warna putih
-                      ),
-                    );
-                  }).toList(),
-                ),
-                SizedBox(height: 16.0),
-                ElevatedButton(
-                  onPressed: _register,
-                  child: Container(
-                    width: double.infinity,
-                    padding: EdgeInsets.symmetric(vertical: 16.0),
-                    child: Center(
-                      child: Text(
-                        'Register',
-                        style: TextStyle(fontSize: 18.0),
-                      ),
-                    ),
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    primary: Color(0xFFB12856), // Button background color
-                    shape: RoundedRectangleBorder(
+                  SizedBox(height: 5.0),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white, // Form background color
                       borderRadius: BorderRadius.circular(8.0),
                     ),
+                    child: TextField(
+                      controller: _emailController,
+                      style: TextStyle(color: Colors.black),
+                      decoration: InputDecoration(
+                        labelText: 'Email',
+                        labelStyle: TextStyle(color: Colors.black),
+                        border: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Colors.black), // Warna hitam
+                        ),
+                        contentPadding: EdgeInsets.all(12.0),
+                      ),
+                    ),
                   ),
-                ),
-              ],
+                  SizedBox(height: 16.0),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white, // Form background color
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                    child: TextField(
+                      controller: _passwordController,
+                      style: TextStyle(color: Colors.black),
+                      decoration: InputDecoration(
+                        labelText: 'Password',
+                        labelStyle: TextStyle(color: Colors.black),
+                        border: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Colors.black), // Warna hitam
+                        ),
+                        contentPadding: EdgeInsets.all(12.0),
+                      ),
+                      obscureText: true,
+                    ),
+                  ),
+                  SizedBox(height: 16.0),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white, // Form background color
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                    child: TextField(
+                      controller: _confirmPasswordController,
+                      style: TextStyle(color: Colors.black),
+                      decoration: InputDecoration(
+                        labelText: 'Confirm Password',
+                        labelStyle: TextStyle(color: Colors.black),
+                        border: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Colors.black), // Warna hitam
+                        ),
+                        contentPadding: EdgeInsets.all(12.0),
+                      ),
+                      obscureText: true,
+                    ),
+                  ),
+                  DropdownButton<String>(
+                    value: _selectedRole,
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        _selectedRole = newValue!;
+                      });
+                    },
+                    items: _roles.map((String role) {
+                      return DropdownMenuItem<String>(
+                        value: role,
+                        child: Text(
+                          role,
+                          style: TextStyle(color: Colors.black), // Warna putih
+                        ),
+                      );
+                    }).toList(),
+                    dropdownColor: Color(0xFFB12856),
+                  ),
+                  SizedBox(height: 16.0),
+                  ElevatedButton(
+                    onPressed: _register,
+                    child: Container(
+                      width: double.infinity,
+                      padding: EdgeInsets.symmetric(vertical: 16.0),
+                      child: Center(
+                        child: Text(
+                          'Register',
+                          style: TextStyle(fontSize: 18.0),
+                        ),
+                      ),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      primary: Color(0xFFB12856), // Button background color
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
-    ),
-  );
-}
+    );
+  }
 }

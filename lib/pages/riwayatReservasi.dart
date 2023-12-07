@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:pa_mobile/providers/theme.dart';
+import 'package:provider/provider.dart';
 
 class RiwayatPage extends StatefulWidget {
   RiwayatPage({Key? key}) : super(key: key);
@@ -12,11 +14,24 @@ class RiwayatPage extends StatefulWidget {
 class _RiwayatPageState extends State<RiwayatPage> {
   final _auth = FirebaseAuth.instance;
 
-   @override
+  @override
   Widget build(BuildContext context) {
+    Tema tema = Provider.of<Tema>(context);
+    TextTheme textTheme = tema.isDarkMode ? tema.teks : tema.teksdark;
     return Scaffold(
+      backgroundColor: tema.isDarkMode
+          ? tema.display().scaffoldBackgroundColor
+          : tema.displaydark().scaffoldBackgroundColor,
       appBar: AppBar(
-        title: Text("Riwayat Reservasi"),
+        backgroundColor: const Color(0xFFB12856),
+        title: Text(
+          "Riwayat Reservasi",
+          style: TextStyle(
+            fontSize: 25,
+            fontWeight: FontWeight.bold,
+            fontFamily: 'poppins',
+          ),
+        ),
       ),
       body: FutureBuilder(
         future: _getReservations(),
@@ -39,19 +54,19 @@ class _RiwayatPageState extends State<RiwayatPage> {
                     children: [
                       Text(
                         reservation.tanggal,
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
+                        style: textTheme.bodySmall,
                       ),
                       FutureBuilder(
                         future: _getDoctorDetails(reservation.doctorId),
-                        builder: (context, AsyncSnapshot<DoctorDetails> doctorSnapshot) {
-                          if (doctorSnapshot.connectionState == ConnectionState.waiting) {
+                        builder: (context,
+                            AsyncSnapshot<DoctorDetails> doctorSnapshot) {
+                          if (doctorSnapshot.connectionState ==
+                              ConnectionState.waiting) {
                             return CircularProgressIndicator();
                           } else if (doctorSnapshot.hasError) {
                             return Text('Error: ${doctorSnapshot.error}');
-                          } else if (!doctorSnapshot.hasData || doctorSnapshot.data == null) {
+                          } else if (!doctorSnapshot.hasData ||
+                              doctorSnapshot.data == null) {
                             return Text('Doctor details not found');
                           } else {
                             return cardAccount(
@@ -77,7 +92,8 @@ class _RiwayatPageState extends State<RiwayatPage> {
     );
   }
 
-  Widget cardAccount(String hospitalName, String jam, IconData arrowIcon, VoidCallback onPressed) {
+  Widget cardAccount(String hospitalName, String jam, IconData arrowIcon,
+      VoidCallback onPressed) {
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       color: Color(0xFFB12856),
@@ -101,31 +117,45 @@ class _RiwayatPageState extends State<RiwayatPage> {
   }
 
   Future<List<Reservation>> _getReservations() async {
-    try {
-      User? user = _auth.currentUser;
-      if (user != null) {
-        QuerySnapshot reservationSnapshot = await FirebaseFirestore.instance
-            .collection('reservations')
-            .where('user_id', isEqualTo: user.uid)
-            .get();
+  try {
+    User? user = _auth.currentUser;
+    if (user != null) {
+      QuerySnapshot reservationSnapshot = await FirebaseFirestore.instance
+          .collection('reservations')
+          .where('user_id', isEqualTo: user.uid)
+          .get();
 
-        List<Reservation> reservations = await Future.wait(reservationSnapshot.docs.map((doc) async {
-          return Reservation(
-            tanggal: doc['tanggal'],
-            doctorId: doc['id_dokter'],
-            jam: doc['jam'],
-          );
-        }));
+      List<Reservation> reservations =
+          await Future.wait(reservationSnapshot.docs.map((doc) async {
+        return Reservation(
+          tanggal: doc['tanggal'],
+          doctorId: doc['id_dokter'],
+          jam: doc['jam'],
+        );
+      }));
 
-        return reservations;
-      } else {
-        return [];
-      }
-    } catch (e) {
-      print('Error fetching reservation data: $e');
+      // Sort the reservations list based on tanggal and jam
+      reservations.sort((a, b) {
+        // First, compare by tanggal
+        int tanggalComparison = a.tanggal.compareTo(b.tanggal);
+        if (tanggalComparison != 0) {
+          return tanggalComparison;
+        }
+        // If tanggal is the same, compare by jam
+        return a.jam.compareTo(b.jam);
+      });
+
+      return reservations;
+    } else {
       return [];
     }
+  } catch (e) {
+    print('Error fetching reservation data: $e');
+    return [];
   }
+}
+
+
 
   Future<DoctorDetails> _getDoctorDetails(String doctorId) async {
     try {
@@ -148,7 +178,7 @@ class _RiwayatPageState extends State<RiwayatPage> {
 class Reservation {
   final String tanggal;
   final String doctorId;
-  final String jam; 
+  final String jam;
 
   Reservation({
     required this.tanggal,

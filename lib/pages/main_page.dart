@@ -227,6 +227,7 @@ class MainPage extends StatelessWidget {
                           hospital: doctorDoc['rumah_sakit'],
                           review: '5.0',
                           doctor_id: doctorDoc.id,
+                          
                         );
                       }
                     },

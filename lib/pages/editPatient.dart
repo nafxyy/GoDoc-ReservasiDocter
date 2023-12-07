@@ -5,8 +5,10 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/services.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
+import 'package:pa_mobile/providers/theme.dart';
 import 'package:pa_mobile/widgets/bottomNavbar.dart';
 import 'package:path/path.dart' as path;
+import 'package:provider/provider.dart';
 
 class EditPatientPage extends StatefulWidget {
   @override
@@ -98,6 +100,9 @@ class _EditPatientPageState extends State<EditPatientPage> {
   }
 
   Widget _buildEditPatientForm() {
+    Tema tema = Provider.of<Tema>(context);
+    TextTheme textTheme = tema.isDarkMode ? tema.teks : tema.teksdark;
+
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: ListView(
@@ -107,14 +112,13 @@ class _EditPatientPageState extends State<EditPatientPage> {
             child: ClipOval(
               child: CircleAvatar(
                 radius: 50,
-                backgroundColor:
-                    Colors.grey[200], // Set background color as needed
+                backgroundColor: Colors.grey[200],
                 child: _image != null
                     ? Image.file(
                         _image!,
-                        width: 50, // Adjust the width as needed
-                        height: 50, // Adjust the height as needed
-                        fit: BoxFit.cover, // Use BoxFit.cover for autofit
+                        width: 50,
+                        height: 50,
+                        fit: BoxFit.cover,
                       )
                     : Icon(
                         Icons.camera_alt,
@@ -125,7 +129,11 @@ class _EditPatientPageState extends State<EditPatientPage> {
           ),
           TextField(
             controller: _namaController,
-            decoration: InputDecoration(labelText: 'Nama Pasien'),
+            decoration: InputDecoration(
+              labelText: 'Nama Pasien',
+              labelStyle: textTheme.bodyMedium,
+            ),
+            style: textTheme.bodySmall,
           ),
           DropdownButtonFormField<String>(
             value: _genderController.text.isNotEmpty
@@ -142,19 +150,31 @@ class _EditPatientPageState extends State<EditPatientPage> {
             ].map((String specialization) {
               return DropdownMenuItem<String>(
                 value: specialization,
-                child: Text(specialization),
+                child: Text(
+                  specialization,
+                  style: textTheme.bodySmall,
+                ),
               );
             }).toList(),
-            decoration: InputDecoration(labelText: 'Jenis Kelamin'),
+            dropdownColor: Color(0xFFB12856),
+            decoration: InputDecoration(
+              labelText: 'Jenis Kelamin',
+              labelStyle: textTheme.bodyMedium,
+            ),
           ),
           TextField(
             controller: _teleponController,
-            decoration: InputDecoration(labelText: 'Nomor Telepon'),
+            decoration: InputDecoration(
+              labelText: 'Nomor Telepon',
+              labelStyle: textTheme.bodyMedium,
+            ),
+            style: textTheme.bodySmall,
             keyboardType: TextInputType.number,
             inputFormatters: <TextInputFormatter>[
               FilteringTextInputFormatter.digitsOnly,
             ],
           ),
+          SizedBox(height: 20),
           ElevatedButton(
             onPressed: () {
               _updatePatientData();
@@ -163,7 +183,19 @@ class _EditPatientPageState extends State<EditPatientPage> {
                 MaterialPageRoute(builder: (context) => NavScreen()),
               );
             },
-            child: Text('Update Data'),
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all<Color>(
+                const Color(0xFFB12856),
+              ),
+            ),
+            child: Text(
+              'Update Data',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'poppins',
+              ),
+            ),
           ),
         ],
       ),
@@ -172,13 +204,23 @@ class _EditPatientPageState extends State<EditPatientPage> {
 
   @override
   Widget build(BuildContext context) {
+    Tema tema = Provider.of<Tema>(context);
     return Scaffold(
+      backgroundColor: tema.isDarkMode
+          ? tema.display().scaffoldBackgroundColor
+          : tema.displaydark().scaffoldBackgroundColor,
       appBar: AppBar(
-        title: Text('Edit Patient'),
+        backgroundColor: const Color(0xFFB12856),
+        title: Text(
+          'Edit Patient',
+          style: TextStyle(
+            fontSize: 25,
+            fontWeight: FontWeight.bold,
+            fontFamily: 'poppins',
+          ),
+        ),
       ),
       body: _buildEditPatientForm(),
     );
   }
-
-  
 }

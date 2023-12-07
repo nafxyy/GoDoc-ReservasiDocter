@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pa_mobile/pages/detail_doctor.dart';
 import 'package:pa_mobile/providers/DocIDprovider.dart';
-import 'package:pa_mobile/providers/theme.dart';
+
 import 'package:provider/provider.dart';
 
 class DoctorCard extends StatelessWidget {
@@ -81,7 +81,8 @@ class DoctorCard extends StatelessWidget {
                         ),
                         Text(
                           ' $review',
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(color: Colors.white,
+                          fontSize: 16),
                         ),
                       ],
                     ),
