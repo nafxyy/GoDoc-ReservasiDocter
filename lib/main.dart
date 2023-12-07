@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pa_mobile/firebase_options.dart';
 import 'package:pa_mobile/pages/intro_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:pa_mobile/pages/login.dart';
+
 import 'package:pa_mobile/providers/DocIDprovider.dart';
 import 'package:pa_mobile/providers/theme.dart';
 import 'package:provider/provider.dart';
@@ -26,7 +26,7 @@ void main() async {
             darkTheme: Provider.of<Tema>(context).displaydark(),
             themeMode: Provider.of<Tema>(context).getThemeMode(),
             debugShowCheckedModeBanner: false,
-            home: LoginPage(),
+            home: MyApp(),
           );
         }
       ),
