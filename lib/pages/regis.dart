@@ -93,11 +93,13 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
+    Tema tema = Provider.of<Tema>(context);
     return Scaffold(
+      backgroundColor: tema.isDarkMode
+          ? tema.display().scaffoldBackgroundColor
+          : tema.displaydark().scaffoldBackgroundColor,
       body: Container(
-        decoration: BoxDecoration(
-          color: Colors.grey[800], // Background color
-        ),
+        
         child: ListView(
           children: [
             Container(
@@ -199,7 +201,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         value: role,
                         child: Text(
                           role,
-                          style: TextStyle(color: Colors.black), // Warna putih
+                          style: TextStyle(color: Colors.white), // Warna putih
                         ),
                       );
                     }).toList(),

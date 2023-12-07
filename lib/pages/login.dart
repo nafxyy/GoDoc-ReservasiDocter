@@ -4,6 +4,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pa_mobile/pages/PatientPage.dart';
 import 'package:pa_mobile/pages/doctorPage.dart';
 import 'package:pa_mobile/pages/regis.dart';
+import 'package:provider/provider.dart';
+import 'package:pa_mobile/providers/theme.dart';
 
 class LoginPage extends StatefulWidget {
   @override
