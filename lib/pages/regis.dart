@@ -216,7 +216,8 @@ class _RegisterPageState extends State<RegisterPage> {
                       child: Center(
                         child: Text(
                           'Register',
-                          style: TextStyle(fontSize: 18.0),
+                          style: TextStyle(fontSize: 18.0,
+                          color: Colors.white),
                         ),
                       ),
                     ),

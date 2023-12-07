@@ -40,15 +40,35 @@ class _DoctorDetailState extends State<DoctorDetail> {
             context: context,
             builder: (context) {
               return AlertDialog(
-                title: Text('Error'),
+                title: Text(
+                  'Error',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                    fontFamily: 'poppins',
+                  ),
+                ),
                 content: Text(
-                    'Doctor is already booked for the selected date and time.'),
+                  'Doctor is already booked for the selected date and time.',
+                  style: TextStyle(
+                    fontFamily: 'poppins',
+                    color: Colors.black,
+                  ),
+                ),
+                backgroundColor: const Color.fromARGB(255, 217, 217, 217),
                 actions: [
                   TextButton(
                     onPressed: () {
                       Navigator.pop(context);
                     },
-                    child: Text('OK'),
+                    child: Text(
+                      'OK',
+                      style: TextStyle(
+                        fontFamily: 'poppins',
+                        color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
                 ],
               );
@@ -68,8 +88,22 @@ class _DoctorDetailState extends State<DoctorDetail> {
             context: context,
             builder: (context) {
               return AlertDialog(
-                title: Text('Success'),
-                content: Text('Doctor Booked'),
+                title: Text(
+                  'Success',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                    fontFamily: 'poppins',
+                  ),
+                ),
+                content: Text(
+                  'Doctor Booked',
+                  style: TextStyle(
+                    fontFamily: 'poppins',
+                    color: Colors.black,
+                  ),
+                ),
+                backgroundColor: const Color.fromARGB(255, 217, 217, 217),
                 actions: [
                   TextButton(
                     onPressed: () {
@@ -80,7 +114,13 @@ class _DoctorDetailState extends State<DoctorDetail> {
                         ),
                       );
                     },
-                    child: Text('OK'),
+                    child: Text('OK',
+                    style: TextStyle(
+                        fontFamily: 'poppins',
+                        color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                      ),
+                      ),
                   ),
                 ],
               );
@@ -456,7 +496,6 @@ class _DoctorDetailState extends State<DoctorDetail> {
                                   selectedHour.isNotEmpty)
                               ? _bookDoctor
                               : null,
-                          
                           style: ButtonStyle(
                             backgroundColor:
                                 MaterialStateProperty.resolveWith<Color>(

@@ -84,7 +84,7 @@ class AboutPage extends StatelessWidget {
                       ),
                       contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 25.0),
                       subtitle: Text(
-                        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+                        'Dengan aplikasi reservasi dokter kami, Anda tidak hanya mendapatkan akses instan ke jaringan dokter berkualitas, tetapi juga memasuki dunia perawatan kesehatan yang lebih efisien dan mudah. Mengutamakan kesehatan Anda, aplikasi ini dirancang untuk memastikan bahwa waktu Anda berharga tidak terbuang sia-sia dalam antrian panjang. Pesan janji kapan saja, di mana saja, dan hindari kerumitan administratif dengan sekali sentuhan layar. Kami menghadirkan kemudahan dalam mengelola jadwal kesehatan Anda, memberikan pengingat janji yang berguna, dan memberikan akses langsung ke riwayat kesehatan Anda. Dengan teknologi canggih, aplikasi ini memanjakan Anda dengan kemudahan, membebaskan Anda dari stres antri dan menghadirkan perawatan kesehatan yang lebih terjangkau dan mudah dijangkau. Sehat tak pernah semudah ini—dengan satu aplikasi, Anda memiliki kontrol penuh atas perjalanan kesehatan Anda.',
                         style: TextStyle(
                           fontSize: 16,
                           color: Colors.white,
