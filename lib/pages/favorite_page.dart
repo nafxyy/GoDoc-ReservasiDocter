@@ -216,7 +216,8 @@ class FavoritePage extends StatelessWidget {
                   child: ListTile(
                     title: Text(
                       name,
-                      style: TextStyle(color: Colors.white),
+                      style: TextStyle(color: Colors.white,
+                      fontSize:24 ),
                     ),
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
