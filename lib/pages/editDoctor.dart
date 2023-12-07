@@ -307,7 +307,6 @@ class _EditDoctorPageState extends State<EditDoctorPage> {
         title: Text(
           'Edit Doctor',
           style: TextStyle(
-            color: Colors.black,
             fontSize: 25,
             fontWeight: FontWeight.bold,
             fontFamily: 'poppins',
