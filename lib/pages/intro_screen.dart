@@ -43,7 +43,6 @@ class Intro extends StatelessWidget {
   Widget build(BuildContext context) {
     Tema tema = Provider.of<Tema>(context);
     return IntroScreenOnboarding(
-
       backgroudColor: tema.isDarkMode
           ? tema.display().scaffoldBackgroundColor
           : tema.displaydark().scaffoldBackgroundColor,

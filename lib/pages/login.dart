@@ -5,6 +5,9 @@ import 'package:pa_mobile/pages/PatientPage.dart';
 import 'package:pa_mobile/pages/doctorPage.dart';
 import 'package:pa_mobile/pages/regis.dart';
 import 'package:pa_mobile/widgets/bottomNavbar.dart';
+import 'package:provider/provider.dart';
+
+import '../providers/theme.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -82,11 +85,13 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   @override
-  @override
   Widget build(BuildContext context) {
+    Tema tema = Provider.of<Tema>(context);
     return Scaffold(
+      backgroundColor: tema.isDarkMode
+          ? tema.display().scaffoldBackgroundColor
+          : tema.displaydark().scaffoldBackgroundColor,
       body: Container(
-        color: Colors.grey[800], // Background color
         child: ListView(
           padding: EdgeInsets.zero, // Remove default padding
           physics:

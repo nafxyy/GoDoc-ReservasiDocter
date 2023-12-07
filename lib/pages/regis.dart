@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:pa_mobile/providers/theme.dart';
+import 'package:provider/provider.dart';
 
 class RegisterPage extends StatefulWidget {
   @override
@@ -83,7 +85,11 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
 Widget build(BuildContext context) {
+  Tema tema = Provider.of(context);
   return Scaffold(
+    backgroundColor: tema.isDarkMode
+          ? tema.display().scaffoldBackgroundColor
+          : tema.displaydark().scaffoldBackgroundColor,
     body: Container(
       decoration: BoxDecoration(
         color: Colors.grey[800], // Background color
